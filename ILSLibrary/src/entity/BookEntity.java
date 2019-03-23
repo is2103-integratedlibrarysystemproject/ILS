@@ -1,20 +1,15 @@
-/*
- * To change this license header, choose License Headers in Project Properties.
- * To change this template file, choose Tools | Templates
- * and open the template in the editor.
- */
 package entity;
 
 import java.io.Serializable;
+import java.util.List;
+import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
+import javax.persistence.OneToMany;
 
-/**
- *
- * @author HP
- */
+
 @Entity
 public class BookEntity implements Serializable {
 
@@ -22,7 +17,31 @@ public class BookEntity implements Serializable {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
+    @Column(nullable = false)
+    private String title;
+    @Column(nullable = false, unique = true)
+    private String isbn;
+    @Column(nullable = false)
+    private Integer year;
+    
+    @OneToMany(mappedBy = "bookentity")
+    private List<LendingEntity> lendings;
 
+    @OneToMany(mappedBy = "bookentity")
+    private List<ReservationEntity> reservations;
+
+    public BookEntity() {
+    }
+
+    public BookEntity(Long id, String title, String isbn, Integer year, List<LendingEntity> lendings, List<ReservationEntity> reservations) {
+        this.id = id;
+        this.title = title;
+        this.isbn = isbn;
+        this.year = year;
+        this.lendings = lendings;
+        this.reservations = reservations;
+    }
+    
     public Long getId() {
         return id;
     }
@@ -30,6 +49,48 @@ public class BookEntity implements Serializable {
     public void setId(Long id) {
         this.id = id;
     }
+
+    public String getTitle() {
+        return title;
+    }
+
+    public void setTitle(String title) {
+        this.title = title;
+    }
+
+    public String getIsbn() {
+        return isbn;
+    }
+
+    public void setIsbn(String isbn) {
+        this.isbn = isbn;
+    }
+
+    public Integer getYear() {
+        return year;
+    }
+
+    public void setYear(Integer year) {
+        this.year = year;
+    }
+
+    public List<LendingEntity> getLendings() {
+        return lendings;
+    }
+
+    public void setLendings(List<LendingEntity> lendings) {
+        this.lendings = lendings;
+    }
+
+    public List<ReservationEntity> getReservations() {
+        return reservations;
+    }
+
+    public void setReservations(List<ReservationEntity> reservations) {
+        this.reservations = reservations;
+    }
+    
+    
 
     @Override
     public int hashCode() {

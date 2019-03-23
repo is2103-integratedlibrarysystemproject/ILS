@@ -1,20 +1,15 @@
-/*
- * To change this license header, choose License Headers in Project Properties.
- * To change this template file, choose Tools | Templates
- * and open the template in the editor.
- */
+
 package entity;
 
 import java.io.Serializable;
+import java.math.BigDecimal;
+import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
+import javax.persistence.OneToOne;
 
-/**
- *
- * @author HP
- */
 @Entity
 public class FineEntity implements Serializable {
 
@@ -22,7 +17,25 @@ public class FineEntity implements Serializable {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
+    @Column(nullable = false)
+    private BigDecimal amount;
+    
+    @OneToOne 
+    private LendingEntity lending;
+    
+    @OneToOne(mappedBy = "fineentity")
+    private PaymentEntity payment;
 
+    public FineEntity() {
+    }
+
+    public FineEntity(Long id, BigDecimal amount, LendingEntity lending, PaymentEntity payment) {
+        this.id = id;
+        this.amount = amount;
+        this.lending = lending;
+        this.payment = payment;
+    }
+    
     public Long getId() {
         return id;
     }
@@ -31,6 +44,30 @@ public class FineEntity implements Serializable {
         this.id = id;
     }
 
+    public BigDecimal getAmount() {
+        return amount;
+    }
+
+    public void setAmount(BigDecimal amount) {
+        this.amount = amount;
+    }
+
+    public LendingEntity getLending() {
+        return lending;
+    }
+
+    public void setLending(LendingEntity lending) {
+        this.lending = lending;
+    }
+
+    public PaymentEntity getPayment() {
+        return payment;
+    }
+
+    public void setPayment(PaymentEntity payment) {
+        this.payment = payment;
+    }
+    
     @Override
     public int hashCode() {
         int hash = 0;
