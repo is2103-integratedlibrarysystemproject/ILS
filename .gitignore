@@ -21,7 +21,12 @@
 
 # virtual machine crash logs, see http://www.java.com/en/download/help/error_hotspot.xml
 hs_err_pid*
-/nbproject/private
+/nbproject/private/
+/BDMClient/nbproject/private/
+/ILS-ejb/nbproject/private/
+/ILSLibrary/nbproject/private/
+/LibraryAdminTerminal/nbproject/private/
+/SelfServiceKiosk/nbproject/private/
 /ILS-ejb/build/
 /ILS-ejb/dist/
 /ILSLibrary/build/
