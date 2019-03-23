@@ -27,6 +27,7 @@ hs_err_pid*
 /ILSLibrary/nbproject/private/
 /LibraryAdminTerminal/nbproject/private/
 /SelfServiceKiosk/nbproject/private/
+/ILS-ejb/setup/glassfish-resources.xml
 /ILS-ejb/build/
 /ILS-ejb/dist/
 /ILSLibrary/build/
