@@ -8,6 +8,7 @@
     <class>entity.PaymentEntity</class>
     <class>entity.ReservationEntity</class>
     <class>entity.StaffEntity</class>
+    <class>entity.MemberEntity</class>
     <exclude-unlisted-classes>true</exclude-unlisted-classes>
     <properties>
       <property name="javax.persistence.schema-generation.database.action" value="drop-and-create"/>

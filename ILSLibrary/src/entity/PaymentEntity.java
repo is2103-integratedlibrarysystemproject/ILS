@@ -1,40 +1,75 @@
-/*
- * To change this license header, choose License Headers in Project Properties.
- * To change this template file, choose Tools | Templates
- * and open the template in the editor.
- */
 package entity;
 
 import java.io.Serializable;
+import java.math.BigDecimal;
+import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
+import javax.persistence.OneToOne;
 
-/**
- *
- * @author HP
- */
 @Entity
 public class PaymentEntity implements Serializable {
 
     private static final long serialVersionUID = 1L;
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private Long id;
+    private Long paymentId;
+    @Column(nullable = false)
+    private BigDecimal amount;
+    @Column(nullable = false)
+    private String method;
+    
+    @OneToOne
+    private FineEntity fine;
 
-    public Long getId() {
-        return id;
+    public PaymentEntity() {
     }
 
-    public void setId(Long id) {
-        this.id = id;
+    public PaymentEntity(Long paymentId, BigDecimal amount, String method, FineEntity fine) {
+        this.paymentId = paymentId;
+        this.amount = amount;
+        this.method = method;
+        this.fine = fine;
+    }
+    
+    public Long getPaymentId() {
+        return paymentId;
     }
 
+    public void setPaymentId(Long paymentId) {
+        this.paymentId = paymentId;
+    }
+
+    public BigDecimal getAmount() {
+        return amount;
+    }
+
+    public void setAmount(BigDecimal amount) {
+        this.amount = amount;
+    }
+
+    public String getMethod() {
+        return method;
+    }
+
+    public void setMethod(String method) {
+        this.method = method;
+    }
+
+    public FineEntity getFine() {
+        return fine;
+    }
+
+    public void setFine(FineEntity fine) {
+        this.fine = fine;
+    }
+    
     @Override
     public int hashCode() {
         int hash = 0;
-        hash += (id != null ? id.hashCode() : 0);
+        hash += (paymentId != null ? paymentId.hashCode() : 0);
         return hash;
     }
 
@@ -45,7 +80,7 @@ public class PaymentEntity implements Serializable {
             return false;
         }
         PaymentEntity other = (PaymentEntity) object;
-        if ((this.id == null && other.id != null) || (this.id != null && !this.id.equals(other.id))) {
+        if ((this.paymentId == null && other.paymentId != null) || (this.paymentId != null && !this.paymentId.equals(other.paymentId))) {
             return false;
         }
         return true;
@@ -53,7 +88,7 @@ public class PaymentEntity implements Serializable {
 
     @Override
     public String toString() {
-        return "entity.PaymentEntity[ id=" + id + " ]";
+        return "entity.PaymentEntity[ id=" + paymentId + " ]";
     }
     
 }
