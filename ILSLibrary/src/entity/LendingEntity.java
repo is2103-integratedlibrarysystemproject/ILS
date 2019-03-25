@@ -19,7 +19,7 @@ public class LendingEntity implements Serializable {
     private static final long serialVersionUID = 1L;
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private Long id;
+    private Long lendId;
     
     @Temporal(TemporalType.TIMESTAMP)
     @Column(nullable = false)
@@ -34,35 +34,35 @@ public class LendingEntity implements Serializable {
     private Date returnDate;
     
     @ManyToOne
-    private MemberEntity members;
+    private MemberEntity member;
     
-    @OneToOne(mappedBy = "lendingentity")
-    private FineEntity fines;
+    @OneToOne(mappedBy = "lending")
+    private FineEntity fine;
     
     @ManyToOne
-    private BookEntity books;
+    private BookEntity book;
     
     
     public LendingEntity() {
     }
 
-    public LendingEntity(Long id, Date lendDate, Date dueDate, Date returnDate, MemberEntity members, FineEntity fines, BookEntity books) {
-        this.id = id;
+    public LendingEntity(Long lendId, Date lendDate, Date dueDate, Date returnDate, MemberEntity member, FineEntity fine, BookEntity book) {
+        this.lendId = lendId;
         this.lendDate = lendDate;
         this.dueDate = dueDate;
         this.returnDate = returnDate;
-        this.members = members;
-        this.fines = fines;
-        this.books = books;
+        this.member = member;
+        this.fine = fine;
+        this.book = book;
     }
     
 
-    public Long getId() {
-        return id;
+    public Long getLendId() {
+        return lendId;
     }
 
-    public void setId(Long id) {
-        this.id = id;
+    public void setLendId(Long lendId) {
+        this.lendId = lendId;
     }
 
     public Date getLendDate() {
@@ -89,34 +89,34 @@ public class LendingEntity implements Serializable {
         this.returnDate = returnDate;
     }
 
-    public MemberEntity getMembers() {
-        return members;
+    public MemberEntity getMember() {
+        return member;
     }
 
-    public void setMembers(MemberEntity members) {
-        this.members = members;
+    public void setMember(MemberEntity member) {
+        this.member = member;
     }
 
-    public FineEntity getFines() {
-        return fines;
+    public FineEntity getFine() {
+        return fine;
     }
 
-    public void setFines(FineEntity fines) {
-        this.fines = fines;
+    public void setFine(FineEntity fine) {
+        this.fine = fine;
     }
 
-    public BookEntity getBooks() {
-        return books;
+    public BookEntity getBook() {
+        return book;
     }
 
-    public void setBooks(BookEntity books) {
-        this.books = books;
+    public void setBooks(BookEntity book) {
+        this.book = book;
     }
 
     @Override
     public int hashCode() {
         int hash = 0;
-        hash += (id != null ? id.hashCode() : 0);
+        hash += (lendId != null ? lendId.hashCode() : 0);
         return hash;
     }
 
@@ -127,7 +127,7 @@ public class LendingEntity implements Serializable {
             return false;
         }
         LendingEntity other = (LendingEntity) object;
-        if ((this.id == null && other.id != null) || (this.id != null && !this.id.equals(other.id))) {
+        if ((this.lendId == null && other.lendId != null) || (this.lendId != null && !this.lendId.equals(other.lendId))) {
             return false;
         }
         return true;
@@ -135,7 +135,7 @@ public class LendingEntity implements Serializable {
 
     @Override
     public String toString() {
-        return "entity.LendingEntity[ id=" + id + " ]";
+        return "entity.LendingEntity[ id=" + lendId + " ]";
     }
     
 }

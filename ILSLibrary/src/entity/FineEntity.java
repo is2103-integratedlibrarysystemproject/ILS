@@ -1,4 +1,3 @@
-
 package entity;
 
 import java.io.Serializable;
@@ -16,32 +15,32 @@ public class FineEntity implements Serializable {
     private static final long serialVersionUID = 1L;
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private Long id;
+    private Long fineId;
     @Column(nullable = false)
     private BigDecimal amount;
     
     @OneToOne 
     private LendingEntity lending;
     
-    @OneToOne(mappedBy = "fineentity")
+    @OneToOne(mappedBy = "fine")
     private PaymentEntity payment;
 
     public FineEntity() {
     }
 
-    public FineEntity(Long id, BigDecimal amount, LendingEntity lending, PaymentEntity payment) {
-        this.id = id;
+    public FineEntity(Long fineId, BigDecimal amount, LendingEntity lending, PaymentEntity payment) {
+        this.fineId = fineId;
         this.amount = amount;
         this.lending = lending;
         this.payment = payment;
     }
     
-    public Long getId() {
-        return id;
+    public Long getFineId() {
+        return fineId;
     }
 
-    public void setId(Long id) {
-        this.id = id;
+    public void setFineId(Long fineId) {
+        this.fineId = fineId;
     }
 
     public BigDecimal getAmount() {
@@ -71,7 +70,7 @@ public class FineEntity implements Serializable {
     @Override
     public int hashCode() {
         int hash = 0;
-        hash += (id != null ? id.hashCode() : 0);
+        hash += (fineId != null ? fineId.hashCode() : 0);
         return hash;
     }
 
@@ -82,7 +81,7 @@ public class FineEntity implements Serializable {
             return false;
         }
         FineEntity other = (FineEntity) object;
-        if ((this.id == null && other.id != null) || (this.id != null && !this.id.equals(other.id))) {
+        if ((this.fineId == null && other.fineId != null) || (this.fineId != null && !this.fineId.equals(other.fineId))) {
             return false;
         }
         return true;
@@ -90,7 +89,7 @@ public class FineEntity implements Serializable {
 
     @Override
     public String toString() {
-        return "entity.FineEntity[ id=" + id + " ]";
+        return "entity.FineEntity[ id=" + fineId + " ]";
     }
     
 }

@@ -13,7 +13,7 @@ public class StaffEntity implements Serializable {
     private static final long serialVersionUID = 1L;
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private Long id;
+    private Long staffId;
     @Column(nullable = false)
     private String firstName;
     @Column(nullable = false)
@@ -26,20 +26,20 @@ public class StaffEntity implements Serializable {
     public StaffEntity() {
     }
 
-    public StaffEntity(Long id, String firstName, String lastName, String username, String password) {
-        this.id = id;
+    public StaffEntity(Long staffId, String firstName, String lastName, String username, String password) {
+        this.staffId = staffId;
         this.firstName = firstName;
         this.lastName = lastName;
         this.username = username;
         this.password = password;
     }
 
-    public Long getId() {
-        return id;
+    public Long getStaffId() {
+        return staffId;
     }
 
-    public void setId(Long id) {
-        this.id = id;
+    public void setStaffId(Long staffId) {
+        this.staffId = staffId;
     }
     
     public String getFirstName() {
@@ -77,7 +77,7 @@ public class StaffEntity implements Serializable {
     @Override
     public int hashCode() {
         int hash = 0;
-        hash += (id != null ? id.hashCode() : 0);
+        hash += (staffId != null ? staffId.hashCode() : 0);
         return hash;
     }
 
@@ -88,7 +88,7 @@ public class StaffEntity implements Serializable {
             return false;
         }
         StaffEntity other = (StaffEntity) object;
-        if ((this.id == null && other.id != null) || (this.id != null && !this.id.equals(other.id))) {
+        if ((this.staffId == null && other.staffId != null) || (this.staffId != null && !this.staffId.equals(other.staffId))) {
             return false;
         }
         return true;
@@ -96,7 +96,7 @@ public class StaffEntity implements Serializable {
 
     @Override
     public String toString() {
-        return "entity.StaffEntity[ id=" + id + " ]";
+        return "entity.StaffEntity[ id=" + staffId + " ]";
     }
     
 }

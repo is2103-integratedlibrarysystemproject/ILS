@@ -15,7 +15,7 @@ public class MemberEntity implements Serializable {
     private static final long serialVersionUID = 1L;
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private Long id;
+    private Long memberId;
     @Column(unique = true, nullable = false)
     private String identityNumber;
     @Column(nullable = false)
@@ -31,16 +31,16 @@ public class MemberEntity implements Serializable {
     @Column(nullable = false)
     private String address;
     
-    @OneToMany(mappedBy = "memberentity")
+    @OneToMany(mappedBy = "member")
     private List<LendingEntity> lendings;
-    @OneToMany(mappedBy = "memberentity")
+    @OneToMany(mappedBy = "member")
     private List<ReservationEntity> reservations;
 
     public MemberEntity() {
     }
 
-    public MemberEntity(Long id, String identityNumber, String firstName, String lastName, String gender, Integer age, String phone, String address, List<LendingEntity> lendings, List<ReservationEntity> reservations) {
-        this.id = id;
+    public MemberEntity(Long memberId, String identityNumber, String firstName, String lastName, String gender, Integer age, String phone, String address, List<LendingEntity> lendings, List<ReservationEntity> reservations) {
+        this.memberId = memberId;
         this.identityNumber = identityNumber;
         this.firstName = firstName;
         this.lastName = lastName;
@@ -52,12 +52,12 @@ public class MemberEntity implements Serializable {
         this.reservations = reservations;
     }
 
-    public Long getId() {
-        return id;
+    public Long getMemberId() {
+        return memberId;
     }
 
-    public void setId(Long id) {
-        this.id = id;
+    public void setMemberId(Long memberId) {
+        this.memberId = memberId;
     }
 
     public String getIdentityNumber() {
@@ -137,7 +137,7 @@ public class MemberEntity implements Serializable {
     @Override
     public int hashCode() {
         int hash = 0;
-        hash += (id != null ? id.hashCode() : 0);
+        hash += (memberId != null ? memberId.hashCode() : 0);
         return hash;
     }
 
@@ -148,7 +148,7 @@ public class MemberEntity implements Serializable {
             return false;
         }
         MemberEntity other = (MemberEntity) object;
-        if ((this.id == null && other.id != null) || (this.id != null && !this.id.equals(other.id))) {
+        if ((this.memberId == null && other.memberId != null) || (this.memberId != null && !this.memberId.equals(other.memberId))) {
             return false;
         }
         return true;
@@ -156,7 +156,7 @@ public class MemberEntity implements Serializable {
 
     @Override
     public String toString() {
-        return "entity.MemberEntity[ id=" + id + " ]";
+        return "entity.MemberEntity[ id=" + memberId + " ]";
     }
     
 }

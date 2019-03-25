@@ -16,7 +16,7 @@ public class BookEntity implements Serializable {
     private static final long serialVersionUID = 1L;
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private Long id;
+    private Long bookId;
     @Column(nullable = false)
     private String title;
     @Column(nullable = false, unique = true)
@@ -24,17 +24,17 @@ public class BookEntity implements Serializable {
     @Column(nullable = false)
     private Integer year;
     
-    @OneToMany(mappedBy = "bookentity")
+    @OneToMany(mappedBy = "book")
     private List<LendingEntity> lendings;
 
-    @OneToMany(mappedBy = "bookentity")
+    @OneToMany(mappedBy = "book")
     private List<ReservationEntity> reservations;
 
     public BookEntity() {
     }
 
-    public BookEntity(Long id, String title, String isbn, Integer year, List<LendingEntity> lendings, List<ReservationEntity> reservations) {
-        this.id = id;
+    public BookEntity(Long bookId, String title, String isbn, Integer year, List<LendingEntity> lendings, List<ReservationEntity> reservations) {
+        this.bookId = bookId;
         this.title = title;
         this.isbn = isbn;
         this.year = year;
@@ -42,12 +42,12 @@ public class BookEntity implements Serializable {
         this.reservations = reservations;
     }
     
-    public Long getId() {
-        return id;
+    public Long getBookId() {
+        return bookId;
     }
 
-    public void setId(Long id) {
-        this.id = id;
+    public void setBookId(Long bookId) {
+        this.bookId = bookId;
     }
 
     public String getTitle() {
@@ -90,12 +90,10 @@ public class BookEntity implements Serializable {
         this.reservations = reservations;
     }
     
-    
-
     @Override
     public int hashCode() {
         int hash = 0;
-        hash += (id != null ? id.hashCode() : 0);
+        hash += (bookId != null ? bookId.hashCode() : 0);
         return hash;
     }
 
@@ -106,7 +104,7 @@ public class BookEntity implements Serializable {
             return false;
         }
         BookEntity other = (BookEntity) object;
-        if ((this.id == null && other.id != null) || (this.id != null && !this.id.equals(other.id))) {
+        if ((this.bookId == null && other.bookId != null) || (this.bookId != null && !this.bookId.equals(other.bookId))) {
             return false;
         }
         return true;
@@ -114,7 +112,7 @@ public class BookEntity implements Serializable {
 
     @Override
     public String toString() {
-        return "entity.BookEntity[ id=" + id + " ]";
+        return "entity.BookEntity[ id=" + bookId + " ]";
     }
     
 }
