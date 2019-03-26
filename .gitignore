@@ -32,3 +32,4 @@ hs_err_pid*
 /ILS-ejb/dist/
 /ILSLibrary/build/
 /ILSLibrary/dist/
+/build/

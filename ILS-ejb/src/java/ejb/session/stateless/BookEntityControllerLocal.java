@@ -1,11 +1,17 @@
-/*
- * To change this license header, choose License Headers in Project Properties.
- * To change this template file, choose Tools | Templates
- * and open the template in the editor.
- */
+
 package ejb.session.stateless;
+
+import util.exception.BookNotFoundException;
+import entity.BookEntity;
+import java.util.List;
 
 
 public interface BookEntityControllerLocal {
-    
+    public BookEntity createNewBook(BookEntity newBookEntity);
+    public List<BookEntity> retrieveAllBooks();
+    public BookEntity retrieveBookByBookId(Long bookId) throws BookNotFoundException;
+    public void updateBook(BookEntity bookEntity);
+    public void deleteBook(Long bookId) throws BookNotFoundException;
+    public BookEntity retrieveBookBytitle(String title) throws BookNotFoundException;
+    public BookEntity retrieveBookByIsbn(String isbn) throws BookNotFoundException;
 }

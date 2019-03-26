@@ -23,6 +23,8 @@ public class BookEntity implements Serializable {
     private String isbn;
     @Column(nullable = false)
     private Integer year;
+    @Column
+    private Integer available;
     
     @OneToMany(mappedBy = "book")
     private List<LendingEntity> lendings;
@@ -33,11 +35,12 @@ public class BookEntity implements Serializable {
     public BookEntity() {
     }
 
-    public BookEntity(Long bookId, String title, String isbn, Integer year, List<LendingEntity> lendings, List<ReservationEntity> reservations) {
+    public BookEntity(Long bookId, String title, String isbn, Integer year, Integer available, List<LendingEntity> lendings, List<ReservationEntity> reservations) {
         this.bookId = bookId;
         this.title = title;
         this.isbn = isbn;
         this.year = year;
+        this.available = available;
         this.lendings = lendings;
         this.reservations = reservations;
     }
@@ -89,6 +92,15 @@ public class BookEntity implements Serializable {
     public void setReservations(List<ReservationEntity> reservations) {
         this.reservations = reservations;
     }
+
+    public Integer getAvailable() {
+        return available;
+    }
+
+    public void setAvailable(Integer available) {
+        this.available = available;
+    }
+    
     
     @Override
     public int hashCode() {

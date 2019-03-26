@@ -18,6 +18,8 @@ public class MemberEntity implements Serializable {
     private Long memberId;
     @Column(unique = true, nullable = false)
     private String identityNumber;
+    @Column(unique = true, nullable = false)
+    private String securityCode;
     @Column(nullable = false)
     private String firstName;
     @Column(nullable = false)
@@ -30,6 +32,8 @@ public class MemberEntity implements Serializable {
     private String phone;
     @Column(nullable = false)
     private String address;
+    @Column
+    private Integer bookBorrowed;
     
     @OneToMany(mappedBy = "member")
     private List<LendingEntity> lendings;
@@ -39,18 +43,21 @@ public class MemberEntity implements Serializable {
     public MemberEntity() {
     }
 
-    public MemberEntity(Long memberId, String identityNumber, String firstName, String lastName, String gender, Integer age, String phone, String address, List<LendingEntity> lendings, List<ReservationEntity> reservations) {
+    public MemberEntity(Long memberId, String identityNumber, String securityCode, String firstName, String lastName, String gender, Integer age, String phone, String address, Integer bookBorrowed, List<LendingEntity> lendings, List<ReservationEntity> reservations) {
         this.memberId = memberId;
         this.identityNumber = identityNumber;
+        this.securityCode = securityCode;
         this.firstName = firstName;
         this.lastName = lastName;
         this.gender = gender;
         this.age = age;
         this.phone = phone;
         this.address = address;
+        this.bookBorrowed = bookBorrowed;
         this.lendings = lendings;
         this.reservations = reservations;
     }
+
 
     public Long getMemberId() {
         return memberId;
@@ -131,7 +138,22 @@ public class MemberEntity implements Serializable {
     public void setReservations(List<ReservationEntity> reservations) {
         this.reservations = reservations;
     }
-    
+
+    public String getSecurityCode() {
+        return securityCode;
+    }
+
+    public void setSecurityCode(String securityCode) {
+        this.securityCode = securityCode;
+    }
+
+    public Integer getBookBorrowed() {
+        return bookBorrowed;
+    }
+
+    public void setBookBorrowed(Integer bookBorrowed) {
+        this.bookBorrowed = bookBorrowed;
+    }
     
     
     @Override

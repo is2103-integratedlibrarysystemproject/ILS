@@ -18,10 +18,5 @@ public class BDMClient {
         // TODO code application logic here
     }
 
-    private static String hello(java.lang.String name) {
-        ws.client.SOAPWebServices_Service service = new ws.client.SOAPWebServices_Service();
-        ws.client.SOAPWebServices port = service.getSOAPWebServicesPort();
-        return port.hello(name);
-    }
-    
+
 }

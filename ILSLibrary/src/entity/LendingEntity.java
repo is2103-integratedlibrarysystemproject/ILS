@@ -30,7 +30,7 @@ public class LendingEntity implements Serializable {
     private Date dueDate;
     
     @Temporal(TemporalType.TIMESTAMP)
-    @Column(nullable = false)
+    @Column(nullable = true)
     private Date returnDate;
     
     @ManyToOne
@@ -46,8 +46,10 @@ public class LendingEntity implements Serializable {
     public LendingEntity() {
     }
 
-    public LendingEntity(Long lendId, Date lendDate, Date dueDate, Date returnDate, MemberEntity member, FineEntity fine, BookEntity book) {
-        this.lendId = lendId;
+  
+    public LendingEntity(Date lendDate, Date dueDate, Date returnDate, MemberEntity member, FineEntity fine, BookEntity book) {
+       
+        this();
         this.lendDate = lendDate;
         this.dueDate = dueDate;
         this.returnDate = returnDate;
