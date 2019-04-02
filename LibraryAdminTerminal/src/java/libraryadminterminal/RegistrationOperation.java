@@ -8,8 +8,7 @@ import java.util.Scanner;
 
 public class RegistrationOperation {
     private MemberEntityControllerRemote memberEntityControllerRemote;
-
-
+    
     public RegistrationOperation() {
     }
 
@@ -29,7 +28,7 @@ public class RegistrationOperation {
         while(true)
         {
             System.out.println("*** ILS :: Registration Operation *** \n");
-            System.out.println("1: Register New Member \n");
+            System.out.println("1: Register New Member");
             System.out.println("2: Back\n");
             response = 0;
             
@@ -58,13 +57,12 @@ public class RegistrationOperation {
         }
     }
     
-      private void createNewMember()
-    {
+      private void createNewMember() {
         Scanner scanner = new Scanner(System.in);
         MemberEntity newMemberEntity = new MemberEntity();
         
         System.out.println("*** ILS :: Registration Operation :: Register New Member ***\n");
-        System.out.print("Enter Identity Name> ");
+        System.out.print("Enter Identity Number> ");
         newMemberEntity.setIdentityNumber(scanner.nextLine().trim());
         System.out.print("Enter Security Code> ");
         newMemberEntity.setSecurityCode(scanner.nextLine().trim());
@@ -76,11 +74,13 @@ public class RegistrationOperation {
         newMemberEntity.setGender(scanner.nextLine().trim());
         System.out.print("Enter Age> ");
         newMemberEntity.setAge(scanner.nextInt());
+        scanner.nextLine();
         System.out.print("Enter Phone> ");
         newMemberEntity.setPhone(scanner.nextLine().trim());
         System.out.print("Enter Address> ");
         newMemberEntity.setAddress(scanner.nextLine().trim());
-     
+        newMemberEntity.setBookBorrowed(0);
+        
         newMemberEntity = memberEntityControllerRemote.createNewMember(newMemberEntity);
         System.out.println("Member has been registered successfully! \n");
     }

@@ -13,7 +13,6 @@ import javax.ejb.EJB;
 
 
 public class Main {
-
     @EJB
     private static PaymentEntityControllerRemote paymentEntityControllerRemote;
     @EJB
@@ -28,10 +27,15 @@ public class Main {
     private static MemberEntityControllerRemote memberEntityControllerRemote;
     @EJB
     private static BookEntityControllerRemote bookEntityControllerRemote;
+    
     private static StaffEntity currentStaffEntity;
-   
+    private static RegistrationOperation registrationOperation = new RegistrationOperation();
+    private static LibraryOperation libraryOperation = new LibraryOperation();
+    private static AdminOperation adminOperation = new AdminOperation();
+    
+    
     public static void main(String[] args) {
-        MainApp mainApp = new MainApp(staffEntityControllerRemote, lendingEntityControllerRemote, bookEntityControllerRemote, paymentEntityControllerRemote, memberEntityControllerRemote, reservationEntityControllerRemote, fineEntityControllerRemote, currentStaffEntity);
+        MainApp mainApp = new MainApp(staffEntityControllerRemote, memberEntityControllerRemote, fineEntityControllerRemote, reservationEntityControllerRemote, paymentEntityControllerRemote, bookEntityControllerRemote, lendingEntityControllerRemote, registrationOperation, libraryOperation, adminOperation, currentStaffEntity);
         mainApp.runApp();
     }
     

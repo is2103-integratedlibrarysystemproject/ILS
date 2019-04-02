@@ -61,7 +61,7 @@ public class MemberEntityController implements MemberEntityControllerRemote, Mem
      @Override
     public MemberEntity retrieveMemberByIc(String ic) throws MemberNotFoundException
     {
-        Query query = entityManager.createQuery("SELECT s FROM MemberEntity s WHERE s.ic = :inIc");
+        Query query = entityManager.createQuery("SELECT s FROM MemberEntity s WHERE s.identityNumber = :inIc");
         query.setParameter("inIc", ic);
         
         try

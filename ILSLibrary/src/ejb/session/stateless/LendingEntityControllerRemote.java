@@ -10,9 +10,9 @@ import util.exception.MemberNotFoundException;
 
 public interface LendingEntityControllerRemote {
     public LendingEntity createNewLending(LendingEntity newLendingEntity);
-     public List<LendingEntity> retrieveAllLendings();
-     public List<LendingEntity> retrieveCurrentLendings(String ic) throws MemberNotFoundException;
-     public LendingEntity retrieveLendingByLendingId(Long lendingId) throws LendingNotFoundException;
-     public void updateLending(LendingEntity lendingEntity);
-     public void deleteLending(Long lendingId) throws LendingNotFoundException;
+    public List<LendingEntity> retrieveAllLendings();
+    public List<LendingEntity> retrieveCurrentLendings(String ic) throws MemberNotFoundException;
+    public LendingEntity retrieveLendingByLendingId(Long lendingId) throws LendingNotFoundException;
+    public void updateLending(LendingEntity lendingEntity);
+    public void deleteLending(Long lendingId) throws LendingNotFoundException;
 }

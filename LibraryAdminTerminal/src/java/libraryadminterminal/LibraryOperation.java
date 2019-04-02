@@ -42,14 +42,12 @@ public class LibraryOperation {
     }
 
    
-    public void menuLibrary() throws LendingNotFoundException, BookNotFoundException 
-    {
+    public void menuLibrary() {
        
         Scanner scanner = new Scanner(System.in);
         Integer response = 0;
         
-        while(true)
-        {
+        while (true) {
             System.out.println("*** ILS System :: Library Operation ***\n");
             System.out.println("1: Lend Book");
             System.out.println("2: View Lent Books");
@@ -60,56 +58,38 @@ public class LibraryOperation {
             System.out.println("7: Back\n");
             response = 0;
             
-             while(response < 1 || response > 7)
-            {
+            while (response < 1 || response > 7) {
                 System.out.print("> ");
 
                 response = scanner.nextInt();
 
-                if(response == 1)
-                {
+                if (response == 1) {
                     lendBook();
-                }
-                else if(response == 2)
-                {
+                } else if (response == 2) {
                     viewLentBooks();
-                }
-                else if(response == 3)
-                {
+                } else if (response == 3) {
                     returnBook();
-                }
-                else if(response == 4)
-                {
+                } else if (response == 4) {
                     //extendBook();
-                }
-                else if(response == 5)
-                {
+                } else if (response == 5) {
                     //payFines();
-                }
-                else if(response == 6)
-                {
+                } else if (response == 6) {
                     //manageReservations();
-                }
-                else if (response == 7)
-                {
+                } else if (response == 7) {
                     return;
-                }
-                else
-                {
+                } else {
                     System.out.println("Invalid option, please try again!\n");                
                 }
             }
              
-            if(response == 7)
-            {
+            if (response == 7) {
                 return;
             }
         }
     }
     
     
-    private void lendBook() 
-    {
+    private void lendBook() {
         Scanner scanner = new Scanner(System.in);
         LendingEntity newLendingEntity = new LendingEntity();
         MemberEntity thisMember = new MemberEntity();
@@ -117,23 +97,26 @@ public class LibraryOperation {
         
         
         System.out.println("*** ILS :: Library Operation :: Lend Book ***\n");   
-        System.out.println("Enter Member Identity Number> ");
-        try{
+        System.out.print("Enter Member Identity Number> ");
+        try {
            thisMember = memberEntityControllerRemote.retrieveMemberByIc(scanner.nextLine().trim());
-        }
-        catch(MemberNotFoundException ex)
-        {
+        } catch (MemberNotFoundException ex) {
             System.out.println("An error has occurred: " + ex.getMessage() + "\n");
             return;
         }
-     
-        System.out.println("Enter Book ID: ");
-       
+        // Find if the member has fine, just return to parent method
+        // print "you have outstanding fine"
+        
+        System.out.print("Enter Book ID: ");
+        
         try{
             
             thisBook = bookEntityControllerRemote.retrieveBookByBookId(scanner.nextLong());
             
-            if(thisBook.getAvailable() > 0 && thisMember.getBookBorrowed() < 3 ){
+            // If the book has reservations, then return
+            // Print "Book already reserved"
+            
+            if(thisBook.getAvailable() > 0 && thisMember.getBookBorrowed() < 3 /* && NO OUTSTANDING FINES */){
                 newLendingEntity.setBooks(thisBook);
                 newLendingEntity.setMember(thisMember);        
             
@@ -153,7 +136,7 @@ public class LibraryOperation {
                 System.out.println("Successfully lent book to member. Due Date: " + due +".\n");
 
             } else {
-                System.out.println("Please check book borrowing limit or book availability.");
+                System.out.println("Please check book borrowing limit, book availability or outstanding fines.");
             }
         }
           catch(BookNotFoundException ex)
@@ -170,27 +153,23 @@ public class LibraryOperation {
         List<LendingEntity> currentLendings = new ArrayList<LendingEntity>();
         
         System.out.println("*** ILS :: Library Operation :: View Lent Books ***\n");
-        System.out.println("Enter Member Identity Number> ");
+        System.out.print("Enter Member Identity Number> ");
         try {
             String ic = scanner.nextLine().trim();
             thisMember = memberEntityControllerRemote.retrieveMemberByIc(ic);
             currentLendings = lendingEntityControllerRemote.retrieveCurrentLendings(ic);
             
-            System.out.print("Currently Lent Books: ");
-            for( LendingEntity l: currentLendings )
-            {
-                System.out.println(l);
+            System.out.println("Currently Lent Books: ");
+            for (LendingEntity l : currentLendings) {
+                System.out.println("TO BE DONE");
             }
-        } 
-        catch (MemberNotFoundException ex)
-        {
+        } catch (MemberNotFoundException ex) {
            System.out.println("An error has occurred: " + ex.getMessage() + "\n");
            return; 
         }
     }
     
-    private void returnBook() throws LendingNotFoundException, BookNotFoundException 
-    {
+    private void returnBook() {
         Scanner scanner = new Scanner(System.in);
         List<LendingEntity> currentLendings = new ArrayList<LendingEntity>();
         MemberEntity thisMember = new MemberEntity();
@@ -202,8 +181,7 @@ public class LibraryOperation {
             currentLendings = lendingEntityControllerRemote.retrieveCurrentLendings(ic);
             
             System.out.print("Currently Lent Books: ");
-            for( LendingEntity l: currentLendings )
-            {
+            for( LendingEntity l : currentLendings ) {
                 System.out.println(l);
             }
         } 
@@ -221,19 +199,21 @@ public class LibraryOperation {
         Date today = cal.getTime();
         
         FineEntity newFineEntity = new FineEntity();
-        for( LendingEntity l: currentLendings )
-            {
-                if(l.getBook().getBookId()== bookId){
+        for( LendingEntity l : currentLendings ) {
+                if (l.getBook().getBookId()== bookId) {
+                    try {
                     thisMember.setBookBorrowed(thisMember.getBookBorrowed()-1);
                     thisBook = bookEntityControllerRemote.retrieveBookByBookId(bookId);
                     thisBook.setAvailable(thisBook.getAvailable()+1);
                     thisLending = lendingEntityControllerRemote.retrieveLendingByLendingId(l.getLendId());
                     thisLending.setReturnDate(today);
                     
-            ///difference for fines
+                    //difference for fines
                     System.out.println("Book successfully returned.");
-                  
-                }else{
+                    } catch (BookNotFoundException | LendingNotFoundException ex) {
+                        System.out.println("An error has occurred: " + ex.getMessage() + "\n");
+                    }
+                } else {
                     System.out.println("Book not found");
                 }
         

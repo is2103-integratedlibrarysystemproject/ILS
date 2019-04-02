@@ -33,3 +33,5 @@ hs_err_pid*
 /ILSLibrary/build/
 /ILSLibrary/dist/
 /build/
+/LibraryAdminTerminal/build/
+/LibraryAdminTerminal/dist/

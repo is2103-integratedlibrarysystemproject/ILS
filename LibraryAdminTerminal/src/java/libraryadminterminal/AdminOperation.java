@@ -5,10 +5,6 @@
  */
 package libraryadminterminal;
 
-/**
- *
- * @author User
- */
 public class AdminOperation {
     
 }
