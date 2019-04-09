@@ -101,17 +101,25 @@ public class MemberEntityController implements MemberEntityControllerRemote, Mem
     @Override
     public void updateMember(MemberEntity memberEntity)
     {
-        entityManager.merge(memberEntity);
+        MemberEntity member = entityManager.find(MemberEntity.class, memberEntity.getMemberId());
+        member.setFirstName(memberEntity.getFirstName());
+        member.setLastName(memberEntity.getLastName());
+        member.setAge(memberEntity.getAge());
+        member.setAddress(memberEntity.getAddress());
+        member.setPhone(memberEntity.getPhone());
+        member.setBookBorrowed(memberEntity.getBookBorrowed());
     }
-    
-    
     
     @Override
     public void deleteMember(Long memberId) throws MemberNotFoundException
     {
-        MemberEntity memberEntityToRemove = retrieveMemberByMemberId(memberId);
+        MemberEntity memberEntityToRemove = entityManager.find(MemberEntity.class, memberId);
+        
+        if (!memberEntityToRemove.getLendings().isEmpty()) {
+            return;
+        }
+        
+        entityManager.refresh(memberEntityToRemove);
         entityManager.remove(memberEntityToRemove);
-    }
-    
-    
+    } 
 }

@@ -1,8 +1,8 @@
-
 package libraryadminterminal;
 
 import ejb.session.stateless.MemberEntityControllerRemote;
 import entity.MemberEntity;
+import java.util.InputMismatchException;
 import java.util.Scanner;
 
 
@@ -27,7 +27,8 @@ public class RegistrationOperation {
         
         while(true)
         {
-            System.out.println("*** ILS :: Registration Operation *** \n");
+            System.out.println("\n");
+            System.out.println("*** ILS :: Registration Operation ***\n");
             System.out.println("1: Register New Member");
             System.out.println("2: Back\n");
             response = 0;
@@ -61,29 +62,35 @@ public class RegistrationOperation {
         Scanner scanner = new Scanner(System.in);
         MemberEntity newMemberEntity = new MemberEntity();
         
+        System.out.println("\n");
         System.out.println("*** ILS :: Registration Operation :: Register New Member ***\n");
-        System.out.print("Enter Identity Number> ");
-        newMemberEntity.setIdentityNumber(scanner.nextLine().trim());
-        System.out.print("Enter Security Code> ");
-        newMemberEntity.setSecurityCode(scanner.nextLine().trim());
-        System.out.print("Enter First Name> ");
-        newMemberEntity.setFirstName(scanner.nextLine().trim());
-        System.out.print("Enter Last Name> ");
-        newMemberEntity.setLastName(scanner.nextLine().trim());
-        System.out.print("Enter Gender> ");
-        newMemberEntity.setGender(scanner.nextLine().trim());
-        System.out.print("Enter Age> ");
-        newMemberEntity.setAge(scanner.nextInt());
-        scanner.nextLine();
-        System.out.print("Enter Phone> ");
-        newMemberEntity.setPhone(scanner.nextLine().trim());
-        System.out.print("Enter Address> ");
-        newMemberEntity.setAddress(scanner.nextLine().trim());
-        newMemberEntity.setBookBorrowed(0);
         
-        newMemberEntity = memberEntityControllerRemote.createNewMember(newMemberEntity);
+        try {
+            System.out.print("Enter Identity Number> ");
+            newMemberEntity.setIdentityNumber(scanner.nextLine().trim());
+            System.out.print("Enter Security Code> ");
+            newMemberEntity.setSecurityCode(scanner.nextLine().trim());
+            System.out.print("Enter First Name> ");
+            newMemberEntity.setFirstName(scanner.nextLine().trim());
+            System.out.print("Enter Last Name> ");
+            newMemberEntity.setLastName(scanner.nextLine().trim());
+            System.out.print("Enter Gender> ");
+            newMemberEntity.setGender(scanner.nextLine().trim());
+            System.out.print("Enter Age> ");
+            newMemberEntity.setAge(scanner.nextInt());
+            scanner.nextLine();
+            System.out.print("Enter Phone> ");
+            newMemberEntity.setPhone(scanner.nextLine().trim());
+            System.out.print("Enter Address> ");
+            newMemberEntity.setAddress(scanner.nextLine().trim());
+            newMemberEntity.setBookBorrowed(0);
+            } 
+            catch (InputMismatchException ex)
+            {
+                System.out.println("Please ensure all field input types are correct. Please try again.\n");
+                return;
+            }
+        memberEntityControllerRemote.createNewMember(newMemberEntity);
         System.out.println("Member has been registered successfully! \n");
     }
-    
-    
 }

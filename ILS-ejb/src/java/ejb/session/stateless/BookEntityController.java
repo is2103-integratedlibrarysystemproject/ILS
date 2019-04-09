@@ -3,6 +3,7 @@ package ejb.session.stateless;
 
 import util.exception.BookNotFoundException;
 import entity.BookEntity;
+import entity.LendingEntity;
 import java.util.List;
 import javax.ejb.Remote;
 import javax.ejb.Local;
@@ -60,25 +61,6 @@ public class BookEntityController implements BookEntityControllerRemote, BookEnt
         }
     }
     
-    
-    
-    @Override
-    public BookEntity retrieveBookBytitle(String title) throws BookNotFoundException
-    {
-        Query query = entityManager.createQuery("SELECT s FROM BookEntity s WHERE s.title = :inTitle");
-        query.setParameter("inTitle", title);
-        
-        try
-        {
-            return (BookEntity)query.getSingleResult();
-        }
-        catch(NoResultException | NonUniqueResultException ex)
-        {
-            throw new BookNotFoundException("Book Title " + title + " does not exist!");
-        }
-    }
-    
-    
     @Override
     public BookEntity retrieveBookByIsbn(String isbn) throws BookNotFoundException
     {
@@ -96,9 +78,29 @@ public class BookEntityController implements BookEntityControllerRemote, BookEnt
     }
     
     @Override
+    public List<BookEntity> retrieveBookByTitle(String title) throws BookNotFoundException
+    {
+        Query query = entityManager.createQuery("SELECT s FROM BookEntity s WHERE s.title LIKE :inTitle");
+        query.setParameter("inTitle", "%"+title+"%");
+        
+        try
+        {
+            return query.getResultList();
+        }
+        catch(NoResultException | NonUniqueResultException ex)
+        {
+            throw new BookNotFoundException("Book Title " + title + " does not exist!");
+        }
+    }
+    
+    @Override
     public void updateBook(BookEntity bookEntity)
     {
-        entityManager.merge(bookEntity);
+        BookEntity book = entityManager.find(BookEntity.class, bookEntity.getBookId());
+        book.setTitle(bookEntity.getTitle());
+        book.setIsbn(bookEntity.getIsbn());
+        book.setYear(bookEntity.getYear());
+        book.setAvailable(bookEntity.getAvailable());
     }
     
     
@@ -106,13 +108,13 @@ public class BookEntityController implements BookEntityControllerRemote, BookEnt
     @Override
     public void deleteBook(Long bookId) throws BookNotFoundException
     {
-        BookEntity bookEntityToRemove = retrieveBookByBookId(bookId);
+        BookEntity bookEntityToRemove = entityManager.find(BookEntity.class, bookId);
+        
+        if (!bookEntityToRemove.getLendings().isEmpty() && !bookEntityToRemove.getReservations().isEmpty()) {
+            return;
+        }
+        
+        entityManager.refresh(bookEntityToRemove);
         entityManager.remove(bookEntityToRemove);
     }
-    
-    
-    
-    
-    
-    
 }

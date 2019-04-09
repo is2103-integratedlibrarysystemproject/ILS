@@ -1,7 +1,9 @@
 package entity;
 
 import java.io.Serializable;
+import java.util.ArrayList;
 import java.util.List;
+import static javax.persistence.CascadeType.ALL;
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
@@ -26,25 +28,17 @@ public class BookEntity implements Serializable {
     @Column
     private Integer available;
     
-    @OneToMany(mappedBy = "book")
+    @OneToMany(cascade=ALL, mappedBy = "book")
     private List<LendingEntity> lendings;
 
-    @OneToMany(mappedBy = "book")
+    @OneToMany(cascade=ALL, mappedBy = "book")
     private List<ReservationEntity> reservations;
 
     public BookEntity() {
+        lendings = new ArrayList<>();
+        reservations = new ArrayList<>();
     }
 
-    public BookEntity(Long bookId, String title, String isbn, Integer year, Integer available, List<LendingEntity> lendings, List<ReservationEntity> reservations) {
-        this.bookId = bookId;
-        this.title = title;
-        this.isbn = isbn;
-        this.year = year;
-        this.available = available;
-        this.lendings = lendings;
-        this.reservations = reservations;
-    }
-    
     public BookEntity(String title, String isbn, Integer year, Integer available, List<LendingEntity> lendings, List<ReservationEntity> reservations) {
         this.title = title;
         this.isbn = isbn;

@@ -1,14 +1,11 @@
-/*
- * To change this license header, choose License Headers in Project Properties.
- * To change this template file, choose Tools | Templates
- * and open the template in the editor.
- */
 package ejb.session.singleton;
 
 import ejb.session.stateless.BookEntityControllerLocal;
 import ejb.session.stateless.StaffEntityControllerLocal;
+import ejb.session.stateless.MemberEntityControllerLocal;
 import entity.BookEntity;
 import entity.LendingEntity;
+import entity.MemberEntity;
 import entity.ReservationEntity;
 import entity.StaffEntity;
 import java.util.ArrayList;
@@ -33,11 +30,11 @@ public class DataInitializationSessionBean {
     private StaffEntityControllerLocal staffEntityControllerLocal;
     @EJB
     private BookEntityControllerLocal bookEntityControllerLocal;
+    @EJB
+    private MemberEntityControllerLocal memberEntityControllerLocal;
     
     public DataInitializationSessionBean() {
     }
-    
-    
     
     @PostConstruct
     public void postConstruct() {
@@ -60,5 +57,7 @@ public class DataInitializationSessionBean {
         bookEntityControllerLocal.createNewBook(new BookEntity("Dream of the Red Chamber", "S32187", 1791, 1, new ArrayList<LendingEntity>(), new ArrayList<ReservationEntity>()));
         bookEntityControllerLocal.createNewBook(new BookEntity("The Lion, the Witch and the Wardrobe", "S74569", 1950, 1, new ArrayList<LendingEntity>(), new ArrayList<ReservationEntity>()));
         
+        memberEntityControllerLocal.createNewMember(new MemberEntity("S7483027A", "1", "Tony", "Teo", "Male", 44, "87297373", "11 Tampines Ave 3", 0, new ArrayList<LendingEntity>(), new ArrayList<ReservationEntity>()));
+        memberEntityControllerLocal.createNewMember(new MemberEntity("S8381028X", "2", "Wendy", "Tan", "Female", 35, "97502837", "15 Computing Dr", 0, new ArrayList<LendingEntity>(), new ArrayList<ReservationEntity>()));
     }
 }

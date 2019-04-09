@@ -4,21 +4,886 @@
 <xsd:import namespace="http://ws.session.ejb/" schemaLocation="http://localhost:8080/SOAPWebServices/SOAPWebServices?xsd=1"/>
 </xsd:schema>
 </types>
-<message name="hello">
-<part name="parameters" element="tns:hello"/>
+<message name="staffLogin">
+<part name="parameters" element="tns:staffLogin"/>
 </message>
-<message name="helloResponse">
-<part name="parameters" element="tns:helloResponse"/>
+<message name="staffLoginResponse">
+<part name="parameters" element="tns:staffLoginResponse"/>
+</message>
+<message name="InvalidLoginCredentialException">
+<part name="fault" element="tns:InvalidLoginCredentialException"/>
+</message>
+<message name="createNewStaff">
+<part name="parameters" element="tns:createNewStaff"/>
+</message>
+<message name="createNewStaffResponse">
+<part name="parameters" element="tns:createNewStaffResponse"/>
+</message>
+<message name="deleteStaff">
+<part name="parameters" element="tns:deleteStaff"/>
+</message>
+<message name="deleteStaffResponse">
+<part name="parameters" element="tns:deleteStaffResponse"/>
+</message>
+<message name="StaffNotFoundException">
+<part name="fault" element="tns:StaffNotFoundException"/>
+</message>
+<message name="updateStaff">
+<part name="parameters" element="tns:updateStaff"/>
+</message>
+<message name="updateStaffResponse">
+<part name="parameters" element="tns:updateStaffResponse"/>
+</message>
+<message name="retrieveReservationByReservationId">
+<part name="parameters" element="tns:retrieveReservationByReservationId"/>
+</message>
+<message name="retrieveReservationByReservationIdResponse">
+<part name="parameters" element="tns:retrieveReservationByReservationIdResponse"/>
+</message>
+<message name="ReservationNotFoundException">
+<part name="fault" element="tns:ReservationNotFoundException"/>
+</message>
+<message name="deleteLending">
+<part name="parameters" element="tns:deleteLending"/>
+</message>
+<message name="deleteLendingResponse">
+<part name="parameters" element="tns:deleteLendingResponse"/>
+</message>
+<message name="LendingNotFoundException">
+<part name="fault" element="tns:LendingNotFoundException"/>
+</message>
+<message name="retrieveAllFines">
+<part name="parameters" element="tns:retrieveAllFines"/>
+</message>
+<message name="retrieveAllFinesResponse">
+<part name="parameters" element="tns:retrieveAllFinesResponse"/>
+</message>
+<message name="createNewLending">
+<part name="parameters" element="tns:createNewLending"/>
+</message>
+<message name="createNewLendingResponse">
+<part name="parameters" element="tns:createNewLendingResponse"/>
+</message>
+<message name="createNewBook">
+<part name="parameters" element="tns:createNewBook"/>
+</message>
+<message name="createNewBookResponse">
+<part name="parameters" element="tns:createNewBookResponse"/>
+</message>
+<message name="memberLogin">
+<part name="parameters" element="tns:memberLogin"/>
+</message>
+<message name="memberLoginResponse">
+<part name="parameters" element="tns:memberLoginResponse"/>
+</message>
+<message name="updateBook">
+<part name="parameters" element="tns:updateBook"/>
+</message>
+<message name="updateBookResponse">
+<part name="parameters" element="tns:updateBookResponse"/>
+</message>
+<message name="deleteMember">
+<part name="parameters" element="tns:deleteMember"/>
+</message>
+<message name="deleteMemberResponse">
+<part name="parameters" element="tns:deleteMemberResponse"/>
+</message>
+<message name="MemberNotFoundException">
+<part name="fault" element="tns:MemberNotFoundException"/>
+</message>
+<message name="deleteBook">
+<part name="parameters" element="tns:deleteBook"/>
+</message>
+<message name="deleteBookResponse">
+<part name="parameters" element="tns:deleteBookResponse"/>
+</message>
+<message name="BookNotFoundException">
+<part name="fault" element="tns:BookNotFoundException"/>
+</message>
+<message name="updateLending">
+<part name="parameters" element="tns:updateLending"/>
+</message>
+<message name="updateLendingResponse">
+<part name="parameters" element="tns:updateLendingResponse"/>
+</message>
+<message name="createNewFine">
+<part name="parameters" element="tns:createNewFine"/>
+</message>
+<message name="createNewFineResponse">
+<part name="parameters" element="tns:createNewFineResponse"/>
+</message>
+<message name="updateMember">
+<part name="parameters" element="tns:updateMember"/>
+</message>
+<message name="updateMemberResponse">
+<part name="parameters" element="tns:updateMemberResponse"/>
+</message>
+<message name="deleteFine">
+<part name="parameters" element="tns:deleteFine"/>
+</message>
+<message name="deleteFineResponse">
+<part name="parameters" element="tns:deleteFineResponse"/>
+</message>
+<message name="FineNotFoundException">
+<part name="fault" element="tns:FineNotFoundException"/>
+</message>
+<message name="retrieveAllBooks">
+<part name="parameters" element="tns:retrieveAllBooks"/>
+</message>
+<message name="retrieveAllBooksResponse">
+<part name="parameters" element="tns:retrieveAllBooksResponse"/>
+</message>
+<message name="updateFine">
+<part name="parameters" element="tns:updateFine"/>
+</message>
+<message name="updateFineResponse">
+<part name="parameters" element="tns:updateFineResponse"/>
+</message>
+<message name="createNewMember">
+<part name="parameters" element="tns:createNewMember"/>
+</message>
+<message name="createNewMemberResponse">
+<part name="parameters" element="tns:createNewMemberResponse"/>
+</message>
+<message name="retrieveFineByFineId">
+<part name="parameters" element="tns:retrieveFineByFineId"/>
+</message>
+<message name="retrieveFineByFineIdResponse">
+<part name="parameters" element="tns:retrieveFineByFineIdResponse"/>
+</message>
+<message name="retrieveAllLendings">
+<part name="parameters" element="tns:retrieveAllLendings"/>
+</message>
+<message name="retrieveAllLendingsResponse">
+<part name="parameters" element="tns:retrieveAllLendingsResponse"/>
+</message>
+<message name="retrieveBookByBookId">
+<part name="parameters" element="tns:retrieveBookByBookId"/>
+</message>
+<message name="retrieveBookByBookIdResponse">
+<part name="parameters" element="tns:retrieveBookByBookIdResponse"/>
+</message>
+<message name="retrieveOutstandingFines">
+<part name="parameters" element="tns:retrieveOutstandingFines"/>
+</message>
+<message name="retrieveOutstandingFinesResponse">
+<part name="parameters" element="tns:retrieveOutstandingFinesResponse"/>
+</message>
+<message name="retrieveLendingByLendingId">
+<part name="parameters" element="tns:retrieveLendingByLendingId"/>
+</message>
+<message name="retrieveLendingByLendingIdResponse">
+<part name="parameters" element="tns:retrieveLendingByLendingIdResponse"/>
+</message>
+<message name="retrieveBookByTitle">
+<part name="parameters" element="tns:retrieveBookByTitle"/>
+</message>
+<message name="retrieveBookByTitleResponse">
+<part name="parameters" element="tns:retrieveBookByTitleResponse"/>
+</message>
+<message name="retrieveAllMembers">
+<part name="parameters" element="tns:retrieveAllMembers"/>
+</message>
+<message name="retrieveAllMembersResponse">
+<part name="parameters" element="tns:retrieveAllMembersResponse"/>
+</message>
+<message name="deleteReservation">
+<part name="parameters" element="tns:deleteReservation"/>
+</message>
+<message name="deleteReservationResponse">
+<part name="parameters" element="tns:deleteReservationResponse"/>
+</message>
+<message name="createNewReservation">
+<part name="parameters" element="tns:createNewReservation"/>
+</message>
+<message name="createNewReservationResponse">
+<part name="parameters" element="tns:createNewReservationResponse"/>
+</message>
+<message name="updateReservation">
+<part name="parameters" element="tns:updateReservation"/>
+</message>
+<message name="updateReservationResponse">
+<part name="parameters" element="tns:updateReservationResponse"/>
+</message>
+<message name="retrieveAllReservations">
+<part name="parameters" element="tns:retrieveAllReservations"/>
+</message>
+<message name="retrieveAllReservationsResponse">
+<part name="parameters" element="tns:retrieveAllReservationsResponse"/>
+</message>
+<message name="retrieveMemberByIc">
+<part name="parameters" element="tns:retrieveMemberByIc"/>
+</message>
+<message name="retrieveMemberByIcResponse">
+<part name="parameters" element="tns:retrieveMemberByIcResponse"/>
+</message>
+<message name="retrieveMemberByMemberId">
+<part name="parameters" element="tns:retrieveMemberByMemberId"/>
+</message>
+<message name="retrieveMemberByMemberIdResponse">
+<part name="parameters" element="tns:retrieveMemberByMemberIdResponse"/>
+</message>
+<message name="retrieveCurrentLendingsByBookId">
+<part name="parameters" element="tns:retrieveCurrentLendingsByBookId"/>
+</message>
+<message name="retrieveCurrentLendingsByBookIdResponse">
+<part name="parameters" element="tns:retrieveCurrentLendingsByBookIdResponse"/>
+</message>
+<message name="retrieveBookReservations">
+<part name="parameters" element="tns:retrieveBookReservations"/>
+</message>
+<message name="retrieveBookReservationsResponse">
+<part name="parameters" element="tns:retrieveBookReservationsResponse"/>
+</message>
+<message name="retrieveBorrowerFines">
+<part name="parameters" element="tns:retrieveBorrowerFines"/>
+</message>
+<message name="retrieveBorrowerFinesResponse">
+<part name="parameters" element="tns:retrieveBorrowerFinesResponse"/>
+</message>
+<message name="retrieveCurrentLendings">
+<part name="parameters" element="tns:retrieveCurrentLendings"/>
+</message>
+<message name="retrieveCurrentLendingsResponse">
+<part name="parameters" element="tns:retrieveCurrentLendingsResponse"/>
+</message>
+<message name="retrieveStaffByUsername">
+<part name="parameters" element="tns:retrieveStaffByUsername"/>
+</message>
+<message name="retrieveStaffByUsernameResponse">
+<part name="parameters" element="tns:retrieveStaffByUsernameResponse"/>
+</message>
+<message name="retrieveStaffByStaffId">
+<part name="parameters" element="tns:retrieveStaffByStaffId"/>
+</message>
+<message name="retrieveStaffByStaffIdResponse">
+<part name="parameters" element="tns:retrieveStaffByStaffIdResponse"/>
+</message>
+<message name="retrieveBookByIsbn">
+<part name="parameters" element="tns:retrieveBookByIsbn"/>
+</message>
+<message name="retrieveBookByIsbnResponse">
+<part name="parameters" element="tns:retrieveBookByIsbnResponse"/>
+</message>
+<message name="retrieveAllStaffs">
+<part name="parameters" element="tns:retrieveAllStaffs"/>
+</message>
+<message name="retrieveAllStaffsResponse">
+<part name="parameters" element="tns:retrieveAllStaffsResponse"/>
 </message>
 <portType name="SOAPWebServices">
-<operation name="hello">
-<input wsam:Action="http://ws.session.ejb/SOAPWebServices/helloRequest" message="tns:hello"/>
-<output wsam:Action="http://ws.session.ejb/SOAPWebServices/helloResponse" message="tns:helloResponse"/>
+<operation name="staffLogin">
+<input wsam:Action="http://ws.session.ejb/SOAPWebServices/staffLoginRequest" message="tns:staffLogin"/>
+<output wsam:Action="http://ws.session.ejb/SOAPWebServices/staffLoginResponse" message="tns:staffLoginResponse"/>
+<fault message="tns:InvalidLoginCredentialException" name="InvalidLoginCredentialException" wsam:Action="http://ws.session.ejb/SOAPWebServices/staffLogin/Fault/InvalidLoginCredentialException"/>
+</operation>
+<operation name="createNewStaff">
+<input wsam:Action="http://ws.session.ejb/SOAPWebServices/createNewStaffRequest" message="tns:createNewStaff"/>
+<output wsam:Action="http://ws.session.ejb/SOAPWebServices/createNewStaffResponse" message="tns:createNewStaffResponse"/>
+</operation>
+<operation name="deleteStaff">
+<input wsam:Action="http://ws.session.ejb/SOAPWebServices/deleteStaffRequest" message="tns:deleteStaff"/>
+<output wsam:Action="http://ws.session.ejb/SOAPWebServices/deleteStaffResponse" message="tns:deleteStaffResponse"/>
+<fault message="tns:StaffNotFoundException" name="StaffNotFoundException" wsam:Action="http://ws.session.ejb/SOAPWebServices/deleteStaff/Fault/StaffNotFoundException"/>
+</operation>
+<operation name="updateStaff">
+<input wsam:Action="http://ws.session.ejb/SOAPWebServices/updateStaffRequest" message="tns:updateStaff"/>
+<output wsam:Action="http://ws.session.ejb/SOAPWebServices/updateStaffResponse" message="tns:updateStaffResponse"/>
+</operation>
+<operation name="retrieveReservationByReservationId">
+<input wsam:Action="http://ws.session.ejb/SOAPWebServices/retrieveReservationByReservationIdRequest" message="tns:retrieveReservationByReservationId"/>
+<output wsam:Action="http://ws.session.ejb/SOAPWebServices/retrieveReservationByReservationIdResponse" message="tns:retrieveReservationByReservationIdResponse"/>
+<fault message="tns:ReservationNotFoundException" name="ReservationNotFoundException" wsam:Action="http://ws.session.ejb/SOAPWebServices/retrieveReservationByReservationId/Fault/ReservationNotFoundException"/>
+</operation>
+<operation name="deleteLending">
+<input wsam:Action="http://ws.session.ejb/SOAPWebServices/deleteLendingRequest" message="tns:deleteLending"/>
+<output wsam:Action="http://ws.session.ejb/SOAPWebServices/deleteLendingResponse" message="tns:deleteLendingResponse"/>
+<fault message="tns:LendingNotFoundException" name="LendingNotFoundException" wsam:Action="http://ws.session.ejb/SOAPWebServices/deleteLending/Fault/LendingNotFoundException"/>
+</operation>
+<operation name="retrieveAllFines">
+<input wsam:Action="http://ws.session.ejb/SOAPWebServices/retrieveAllFinesRequest" message="tns:retrieveAllFines"/>
+<output wsam:Action="http://ws.session.ejb/SOAPWebServices/retrieveAllFinesResponse" message="tns:retrieveAllFinesResponse"/>
+</operation>
+<operation name="createNewLending">
+<input wsam:Action="http://ws.session.ejb/SOAPWebServices/createNewLendingRequest" message="tns:createNewLending"/>
+<output wsam:Action="http://ws.session.ejb/SOAPWebServices/createNewLendingResponse" message="tns:createNewLendingResponse"/>
+</operation>
+<operation name="createNewBook">
+<input wsam:Action="http://ws.session.ejb/SOAPWebServices/createNewBookRequest" message="tns:createNewBook"/>
+<output wsam:Action="http://ws.session.ejb/SOAPWebServices/createNewBookResponse" message="tns:createNewBookResponse"/>
+</operation>
+<operation name="memberLogin">
+<input wsam:Action="http://ws.session.ejb/SOAPWebServices/memberLoginRequest" message="tns:memberLogin"/>
+<output wsam:Action="http://ws.session.ejb/SOAPWebServices/memberLoginResponse" message="tns:memberLoginResponse"/>
+<fault message="tns:InvalidLoginCredentialException" name="InvalidLoginCredentialException" wsam:Action="http://ws.session.ejb/SOAPWebServices/memberLogin/Fault/InvalidLoginCredentialException"/>
+</operation>
+<operation name="updateBook">
+<input wsam:Action="http://ws.session.ejb/SOAPWebServices/updateBookRequest" message="tns:updateBook"/>
+<output wsam:Action="http://ws.session.ejb/SOAPWebServices/updateBookResponse" message="tns:updateBookResponse"/>
+</operation>
+<operation name="deleteMember">
+<input wsam:Action="http://ws.session.ejb/SOAPWebServices/deleteMemberRequest" message="tns:deleteMember"/>
+<output wsam:Action="http://ws.session.ejb/SOAPWebServices/deleteMemberResponse" message="tns:deleteMemberResponse"/>
+<fault message="tns:MemberNotFoundException" name="MemberNotFoundException" wsam:Action="http://ws.session.ejb/SOAPWebServices/deleteMember/Fault/MemberNotFoundException"/>
+</operation>
+<operation name="deleteBook">
+<input wsam:Action="http://ws.session.ejb/SOAPWebServices/deleteBookRequest" message="tns:deleteBook"/>
+<output wsam:Action="http://ws.session.ejb/SOAPWebServices/deleteBookResponse" message="tns:deleteBookResponse"/>
+<fault message="tns:BookNotFoundException" name="BookNotFoundException" wsam:Action="http://ws.session.ejb/SOAPWebServices/deleteBook/Fault/BookNotFoundException"/>
+</operation>
+<operation name="updateLending">
+<input wsam:Action="http://ws.session.ejb/SOAPWebServices/updateLendingRequest" message="tns:updateLending"/>
+<output wsam:Action="http://ws.session.ejb/SOAPWebServices/updateLendingResponse" message="tns:updateLendingResponse"/>
+</operation>
+<operation name="createNewFine">
+<input wsam:Action="http://ws.session.ejb/SOAPWebServices/createNewFineRequest" message="tns:createNewFine"/>
+<output wsam:Action="http://ws.session.ejb/SOAPWebServices/createNewFineResponse" message="tns:createNewFineResponse"/>
+</operation>
+<operation name="updateMember">
+<input wsam:Action="http://ws.session.ejb/SOAPWebServices/updateMemberRequest" message="tns:updateMember"/>
+<output wsam:Action="http://ws.session.ejb/SOAPWebServices/updateMemberResponse" message="tns:updateMemberResponse"/>
+</operation>
+<operation name="deleteFine">
+<input wsam:Action="http://ws.session.ejb/SOAPWebServices/deleteFineRequest" message="tns:deleteFine"/>
+<output wsam:Action="http://ws.session.ejb/SOAPWebServices/deleteFineResponse" message="tns:deleteFineResponse"/>
+<fault message="tns:FineNotFoundException" name="FineNotFoundException" wsam:Action="http://ws.session.ejb/SOAPWebServices/deleteFine/Fault/FineNotFoundException"/>
+</operation>
+<operation name="retrieveAllBooks">
+<input wsam:Action="http://ws.session.ejb/SOAPWebServices/retrieveAllBooksRequest" message="tns:retrieveAllBooks"/>
+<output wsam:Action="http://ws.session.ejb/SOAPWebServices/retrieveAllBooksResponse" message="tns:retrieveAllBooksResponse"/>
+</operation>
+<operation name="updateFine">
+<input wsam:Action="http://ws.session.ejb/SOAPWebServices/updateFineRequest" message="tns:updateFine"/>
+<output wsam:Action="http://ws.session.ejb/SOAPWebServices/updateFineResponse" message="tns:updateFineResponse"/>
+</operation>
+<operation name="createNewMember">
+<input wsam:Action="http://ws.session.ejb/SOAPWebServices/createNewMemberRequest" message="tns:createNewMember"/>
+<output wsam:Action="http://ws.session.ejb/SOAPWebServices/createNewMemberResponse" message="tns:createNewMemberResponse"/>
+</operation>
+<operation name="retrieveFineByFineId">
+<input wsam:Action="http://ws.session.ejb/SOAPWebServices/retrieveFineByFineIdRequest" message="tns:retrieveFineByFineId"/>
+<output wsam:Action="http://ws.session.ejb/SOAPWebServices/retrieveFineByFineIdResponse" message="tns:retrieveFineByFineIdResponse"/>
+<fault message="tns:FineNotFoundException" name="FineNotFoundException" wsam:Action="http://ws.session.ejb/SOAPWebServices/retrieveFineByFineId/Fault/FineNotFoundException"/>
+</operation>
+<operation name="retrieveAllLendings">
+<input wsam:Action="http://ws.session.ejb/SOAPWebServices/retrieveAllLendingsRequest" message="tns:retrieveAllLendings"/>
+<output wsam:Action="http://ws.session.ejb/SOAPWebServices/retrieveAllLendingsResponse" message="tns:retrieveAllLendingsResponse"/>
+</operation>
+<operation name="retrieveBookByBookId">
+<input wsam:Action="http://ws.session.ejb/SOAPWebServices/retrieveBookByBookIdRequest" message="tns:retrieveBookByBookId"/>
+<output wsam:Action="http://ws.session.ejb/SOAPWebServices/retrieveBookByBookIdResponse" message="tns:retrieveBookByBookIdResponse"/>
+<fault message="tns:BookNotFoundException" name="BookNotFoundException" wsam:Action="http://ws.session.ejb/SOAPWebServices/retrieveBookByBookId/Fault/BookNotFoundException"/>
+</operation>
+<operation name="retrieveOutstandingFines">
+<input wsam:Action="http://ws.session.ejb/SOAPWebServices/retrieveOutstandingFinesRequest" message="tns:retrieveOutstandingFines"/>
+<output wsam:Action="http://ws.session.ejb/SOAPWebServices/retrieveOutstandingFinesResponse" message="tns:retrieveOutstandingFinesResponse"/>
+<fault message="tns:FineNotFoundException" name="FineNotFoundException" wsam:Action="http://ws.session.ejb/SOAPWebServices/retrieveOutstandingFines/Fault/FineNotFoundException"/>
+</operation>
+<operation name="retrieveLendingByLendingId">
+<input wsam:Action="http://ws.session.ejb/SOAPWebServices/retrieveLendingByLendingIdRequest" message="tns:retrieveLendingByLendingId"/>
+<output wsam:Action="http://ws.session.ejb/SOAPWebServices/retrieveLendingByLendingIdResponse" message="tns:retrieveLendingByLendingIdResponse"/>
+<fault message="tns:LendingNotFoundException" name="LendingNotFoundException" wsam:Action="http://ws.session.ejb/SOAPWebServices/retrieveLendingByLendingId/Fault/LendingNotFoundException"/>
+</operation>
+<operation name="retrieveBookByTitle">
+<input wsam:Action="http://ws.session.ejb/SOAPWebServices/retrieveBookByTitleRequest" message="tns:retrieveBookByTitle"/>
+<output wsam:Action="http://ws.session.ejb/SOAPWebServices/retrieveBookByTitleResponse" message="tns:retrieveBookByTitleResponse"/>
+<fault message="tns:BookNotFoundException" name="BookNotFoundException" wsam:Action="http://ws.session.ejb/SOAPWebServices/retrieveBookByTitle/Fault/BookNotFoundException"/>
+</operation>
+<operation name="retrieveAllMembers">
+<input wsam:Action="http://ws.session.ejb/SOAPWebServices/retrieveAllMembersRequest" message="tns:retrieveAllMembers"/>
+<output wsam:Action="http://ws.session.ejb/SOAPWebServices/retrieveAllMembersResponse" message="tns:retrieveAllMembersResponse"/>
+</operation>
+<operation name="deleteReservation">
+<input wsam:Action="http://ws.session.ejb/SOAPWebServices/deleteReservationRequest" message="tns:deleteReservation"/>
+<output wsam:Action="http://ws.session.ejb/SOAPWebServices/deleteReservationResponse" message="tns:deleteReservationResponse"/>
+<fault message="tns:ReservationNotFoundException" name="ReservationNotFoundException" wsam:Action="http://ws.session.ejb/SOAPWebServices/deleteReservation/Fault/ReservationNotFoundException"/>
+</operation>
+<operation name="createNewReservation">
+<input wsam:Action="http://ws.session.ejb/SOAPWebServices/createNewReservationRequest" message="tns:createNewReservation"/>
+<output wsam:Action="http://ws.session.ejb/SOAPWebServices/createNewReservationResponse" message="tns:createNewReservationResponse"/>
+</operation>
+<operation name="updateReservation">
+<input wsam:Action="http://ws.session.ejb/SOAPWebServices/updateReservationRequest" message="tns:updateReservation"/>
+<output wsam:Action="http://ws.session.ejb/SOAPWebServices/updateReservationResponse" message="tns:updateReservationResponse"/>
+</operation>
+<operation name="retrieveAllReservations">
+<input wsam:Action="http://ws.session.ejb/SOAPWebServices/retrieveAllReservationsRequest" message="tns:retrieveAllReservations"/>
+<output wsam:Action="http://ws.session.ejb/SOAPWebServices/retrieveAllReservationsResponse" message="tns:retrieveAllReservationsResponse"/>
+</operation>
+<operation name="retrieveMemberByIc">
+<input wsam:Action="http://ws.session.ejb/SOAPWebServices/retrieveMemberByIcRequest" message="tns:retrieveMemberByIc"/>
+<output wsam:Action="http://ws.session.ejb/SOAPWebServices/retrieveMemberByIcResponse" message="tns:retrieveMemberByIcResponse"/>
+<fault message="tns:MemberNotFoundException" name="MemberNotFoundException" wsam:Action="http://ws.session.ejb/SOAPWebServices/retrieveMemberByIc/Fault/MemberNotFoundException"/>
+</operation>
+<operation name="retrieveMemberByMemberId">
+<input wsam:Action="http://ws.session.ejb/SOAPWebServices/retrieveMemberByMemberIdRequest" message="tns:retrieveMemberByMemberId"/>
+<output wsam:Action="http://ws.session.ejb/SOAPWebServices/retrieveMemberByMemberIdResponse" message="tns:retrieveMemberByMemberIdResponse"/>
+<fault message="tns:MemberNotFoundException" name="MemberNotFoundException" wsam:Action="http://ws.session.ejb/SOAPWebServices/retrieveMemberByMemberId/Fault/MemberNotFoundException"/>
+</operation>
+<operation name="retrieveCurrentLendingsByBookId">
+<input wsam:Action="http://ws.session.ejb/SOAPWebServices/retrieveCurrentLendingsByBookIdRequest" message="tns:retrieveCurrentLendingsByBookId"/>
+<output wsam:Action="http://ws.session.ejb/SOAPWebServices/retrieveCurrentLendingsByBookIdResponse" message="tns:retrieveCurrentLendingsByBookIdResponse"/>
+<fault message="tns:BookNotFoundException" name="BookNotFoundException" wsam:Action="http://ws.session.ejb/SOAPWebServices/retrieveCurrentLendingsByBookId/Fault/BookNotFoundException"/>
+</operation>
+<operation name="retrieveBookReservations">
+<input wsam:Action="http://ws.session.ejb/SOAPWebServices/retrieveBookReservationsRequest" message="tns:retrieveBookReservations"/>
+<output wsam:Action="http://ws.session.ejb/SOAPWebServices/retrieveBookReservationsResponse" message="tns:retrieveBookReservationsResponse"/>
+</operation>
+<operation name="retrieveBorrowerFines">
+<input wsam:Action="http://ws.session.ejb/SOAPWebServices/retrieveBorrowerFinesRequest" message="tns:retrieveBorrowerFines"/>
+<output wsam:Action="http://ws.session.ejb/SOAPWebServices/retrieveBorrowerFinesResponse" message="tns:retrieveBorrowerFinesResponse"/>
+</operation>
+<operation name="retrieveCurrentLendings">
+<input wsam:Action="http://ws.session.ejb/SOAPWebServices/retrieveCurrentLendingsRequest" message="tns:retrieveCurrentLendings"/>
+<output wsam:Action="http://ws.session.ejb/SOAPWebServices/retrieveCurrentLendingsResponse" message="tns:retrieveCurrentLendingsResponse"/>
+<fault message="tns:MemberNotFoundException" name="MemberNotFoundException" wsam:Action="http://ws.session.ejb/SOAPWebServices/retrieveCurrentLendings/Fault/MemberNotFoundException"/>
+</operation>
+<operation name="retrieveStaffByUsername">
+<input wsam:Action="http://ws.session.ejb/SOAPWebServices/retrieveStaffByUsernameRequest" message="tns:retrieveStaffByUsername"/>
+<output wsam:Action="http://ws.session.ejb/SOAPWebServices/retrieveStaffByUsernameResponse" message="tns:retrieveStaffByUsernameResponse"/>
+<fault message="tns:StaffNotFoundException" name="StaffNotFoundException" wsam:Action="http://ws.session.ejb/SOAPWebServices/retrieveStaffByUsername/Fault/StaffNotFoundException"/>
+</operation>
+<operation name="retrieveStaffByStaffId">
+<input wsam:Action="http://ws.session.ejb/SOAPWebServices/retrieveStaffByStaffIdRequest" message="tns:retrieveStaffByStaffId"/>
+<output wsam:Action="http://ws.session.ejb/SOAPWebServices/retrieveStaffByStaffIdResponse" message="tns:retrieveStaffByStaffIdResponse"/>
+<fault message="tns:StaffNotFoundException" name="StaffNotFoundException" wsam:Action="http://ws.session.ejb/SOAPWebServices/retrieveStaffByStaffId/Fault/StaffNotFoundException"/>
+</operation>
+<operation name="retrieveBookByIsbn">
+<input wsam:Action="http://ws.session.ejb/SOAPWebServices/retrieveBookByIsbnRequest" message="tns:retrieveBookByIsbn"/>
+<output wsam:Action="http://ws.session.ejb/SOAPWebServices/retrieveBookByIsbnResponse" message="tns:retrieveBookByIsbnResponse"/>
+<fault message="tns:BookNotFoundException" name="BookNotFoundException" wsam:Action="http://ws.session.ejb/SOAPWebServices/retrieveBookByIsbn/Fault/BookNotFoundException"/>
+</operation>
+<operation name="retrieveAllStaffs">
+<input wsam:Action="http://ws.session.ejb/SOAPWebServices/retrieveAllStaffsRequest" message="tns:retrieveAllStaffs"/>
+<output wsam:Action="http://ws.session.ejb/SOAPWebServices/retrieveAllStaffsResponse" message="tns:retrieveAllStaffsResponse"/>
 </operation>
 </portType>
 <binding name="SOAPWebServicesPortBinding" type="tns:SOAPWebServices">
 <soap:binding transport="http://schemas.xmlsoap.org/soap/http" style="document"/>
-<operation name="hello">
+<operation name="staffLogin">
+<soap:operation soapAction=""/>
+<input>
+<soap:body use="literal"/>
+</input>
+<output>
+<soap:body use="literal"/>
+</output>
+<fault name="InvalidLoginCredentialException">
+<soap:fault name="InvalidLoginCredentialException" use="literal"/>
+</fault>
+</operation>
+<operation name="createNewStaff">
+<soap:operation soapAction=""/>
+<input>
+<soap:body use="literal"/>
+</input>
+<output>
+<soap:body use="literal"/>
+</output>
+</operation>
+<operation name="deleteStaff">
+<soap:operation soapAction=""/>
+<input>
+<soap:body use="literal"/>
+</input>
+<output>
+<soap:body use="literal"/>
+</output>
+<fault name="StaffNotFoundException">
+<soap:fault name="StaffNotFoundException" use="literal"/>
+</fault>
+</operation>
+<operation name="updateStaff">
+<soap:operation soapAction=""/>
+<input>
+<soap:body use="literal"/>
+</input>
+<output>
+<soap:body use="literal"/>
+</output>
+</operation>
+<operation name="retrieveReservationByReservationId">
+<soap:operation soapAction=""/>
+<input>
+<soap:body use="literal"/>
+</input>
+<output>
+<soap:body use="literal"/>
+</output>
+<fault name="ReservationNotFoundException">
+<soap:fault name="ReservationNotFoundException" use="literal"/>
+</fault>
+</operation>
+<operation name="deleteLending">
+<soap:operation soapAction=""/>
+<input>
+<soap:body use="literal"/>
+</input>
+<output>
+<soap:body use="literal"/>
+</output>
+<fault name="LendingNotFoundException">
+<soap:fault name="LendingNotFoundException" use="literal"/>
+</fault>
+</operation>
+<operation name="retrieveAllFines">
+<soap:operation soapAction=""/>
+<input>
+<soap:body use="literal"/>
+</input>
+<output>
+<soap:body use="literal"/>
+</output>
+</operation>
+<operation name="createNewLending">
+<soap:operation soapAction=""/>
+<input>
+<soap:body use="literal"/>
+</input>
+<output>
+<soap:body use="literal"/>
+</output>
+</operation>
+<operation name="createNewBook">
+<soap:operation soapAction=""/>
+<input>
+<soap:body use="literal"/>
+</input>
+<output>
+<soap:body use="literal"/>
+</output>
+</operation>
+<operation name="memberLogin">
+<soap:operation soapAction=""/>
+<input>
+<soap:body use="literal"/>
+</input>
+<output>
+<soap:body use="literal"/>
+</output>
+<fault name="InvalidLoginCredentialException">
+<soap:fault name="InvalidLoginCredentialException" use="literal"/>
+</fault>
+</operation>
+<operation name="updateBook">
+<soap:operation soapAction=""/>
+<input>
+<soap:body use="literal"/>
+</input>
+<output>
+<soap:body use="literal"/>
+</output>
+</operation>
+<operation name="deleteMember">
+<soap:operation soapAction=""/>
+<input>
+<soap:body use="literal"/>
+</input>
+<output>
+<soap:body use="literal"/>
+</output>
+<fault name="MemberNotFoundException">
+<soap:fault name="MemberNotFoundException" use="literal"/>
+</fault>
+</operation>
+<operation name="deleteBook">
+<soap:operation soapAction=""/>
+<input>
+<soap:body use="literal"/>
+</input>
+<output>
+<soap:body use="literal"/>
+</output>
+<fault name="BookNotFoundException">
+<soap:fault name="BookNotFoundException" use="literal"/>
+</fault>
+</operation>
+<operation name="updateLending">
+<soap:operation soapAction=""/>
+<input>
+<soap:body use="literal"/>
+</input>
+<output>
+<soap:body use="literal"/>
+</output>
+</operation>
+<operation name="createNewFine">
+<soap:operation soapAction=""/>
+<input>
+<soap:body use="literal"/>
+</input>
+<output>
+<soap:body use="literal"/>
+</output>
+</operation>
+<operation name="updateMember">
+<soap:operation soapAction=""/>
+<input>
+<soap:body use="literal"/>
+</input>
+<output>
+<soap:body use="literal"/>
+</output>
+</operation>
+<operation name="deleteFine">
+<soap:operation soapAction=""/>
+<input>
+<soap:body use="literal"/>
+</input>
+<output>
+<soap:body use="literal"/>
+</output>
+<fault name="FineNotFoundException">
+<soap:fault name="FineNotFoundException" use="literal"/>
+</fault>
+</operation>
+<operation name="retrieveAllBooks">
+<soap:operation soapAction=""/>
+<input>
+<soap:body use="literal"/>
+</input>
+<output>
+<soap:body use="literal"/>
+</output>
+</operation>
+<operation name="updateFine">
+<soap:operation soapAction=""/>
+<input>
+<soap:body use="literal"/>
+</input>
+<output>
+<soap:body use="literal"/>
+</output>
+</operation>
+<operation name="createNewMember">
+<soap:operation soapAction=""/>
+<input>
+<soap:body use="literal"/>
+</input>
+<output>
+<soap:body use="literal"/>
+</output>
+</operation>
+<operation name="retrieveFineByFineId">
+<soap:operation soapAction=""/>
+<input>
+<soap:body use="literal"/>
+</input>
+<output>
+<soap:body use="literal"/>
+</output>
+<fault name="FineNotFoundException">
+<soap:fault name="FineNotFoundException" use="literal"/>
+</fault>
+</operation>
+<operation name="retrieveAllLendings">
+<soap:operation soapAction=""/>
+<input>
+<soap:body use="literal"/>
+</input>
+<output>
+<soap:body use="literal"/>
+</output>
+</operation>
+<operation name="retrieveBookByBookId">
+<soap:operation soapAction=""/>
+<input>
+<soap:body use="literal"/>
+</input>
+<output>
+<soap:body use="literal"/>
+</output>
+<fault name="BookNotFoundException">
+<soap:fault name="BookNotFoundException" use="literal"/>
+</fault>
+</operation>
+<operation name="retrieveOutstandingFines">
+<soap:operation soapAction=""/>
+<input>
+<soap:body use="literal"/>
+</input>
+<output>
+<soap:body use="literal"/>
+</output>
+<fault name="FineNotFoundException">
+<soap:fault name="FineNotFoundException" use="literal"/>
+</fault>
+</operation>
+<operation name="retrieveLendingByLendingId">
+<soap:operation soapAction=""/>
+<input>
+<soap:body use="literal"/>
+</input>
+<output>
+<soap:body use="literal"/>
+</output>
+<fault name="LendingNotFoundException">
+<soap:fault name="LendingNotFoundException" use="literal"/>
+</fault>
+</operation>
+<operation name="retrieveBookByTitle">
+<soap:operation soapAction=""/>
+<input>
+<soap:body use="literal"/>
+</input>
+<output>
+<soap:body use="literal"/>
+</output>
+<fault name="BookNotFoundException">
+<soap:fault name="BookNotFoundException" use="literal"/>
+</fault>
+</operation>
+<operation name="retrieveAllMembers">
+<soap:operation soapAction=""/>
+<input>
+<soap:body use="literal"/>
+</input>
+<output>
+<soap:body use="literal"/>
+</output>
+</operation>
+<operation name="deleteReservation">
+<soap:operation soapAction=""/>
+<input>
+<soap:body use="literal"/>
+</input>
+<output>
+<soap:body use="literal"/>
+</output>
+<fault name="ReservationNotFoundException">
+<soap:fault name="ReservationNotFoundException" use="literal"/>
+</fault>
+</operation>
+<operation name="createNewReservation">
+<soap:operation soapAction=""/>
+<input>
+<soap:body use="literal"/>
+</input>
+<output>
+<soap:body use="literal"/>
+</output>
+</operation>
+<operation name="updateReservation">
+<soap:operation soapAction=""/>
+<input>
+<soap:body use="literal"/>
+</input>
+<output>
+<soap:body use="literal"/>
+</output>
+</operation>
+<operation name="retrieveAllReservations">
+<soap:operation soapAction=""/>
+<input>
+<soap:body use="literal"/>
+</input>
+<output>
+<soap:body use="literal"/>
+</output>
+</operation>
+<operation name="retrieveMemberByIc">
+<soap:operation soapAction=""/>
+<input>
+<soap:body use="literal"/>
+</input>
+<output>
+<soap:body use="literal"/>
+</output>
+<fault name="MemberNotFoundException">
+<soap:fault name="MemberNotFoundException" use="literal"/>
+</fault>
+</operation>
+<operation name="retrieveMemberByMemberId">
+<soap:operation soapAction=""/>
+<input>
+<soap:body use="literal"/>
+</input>
+<output>
+<soap:body use="literal"/>
+</output>
+<fault name="MemberNotFoundException">
+<soap:fault name="MemberNotFoundException" use="literal"/>
+</fault>
+</operation>
+<operation name="retrieveCurrentLendingsByBookId">
+<soap:operation soapAction=""/>
+<input>
+<soap:body use="literal"/>
+</input>
+<output>
+<soap:body use="literal"/>
+</output>
+<fault name="BookNotFoundException">
+<soap:fault name="BookNotFoundException" use="literal"/>
+</fault>
+</operation>
+<operation name="retrieveBookReservations">
+<soap:operation soapAction=""/>
+<input>
+<soap:body use="literal"/>
+</input>
+<output>
+<soap:body use="literal"/>
+</output>
+</operation>
+<operation name="retrieveBorrowerFines">
+<soap:operation soapAction=""/>
+<input>
+<soap:body use="literal"/>
+</input>
+<output>
+<soap:body use="literal"/>
+</output>
+</operation>
+<operation name="retrieveCurrentLendings">
+<soap:operation soapAction=""/>
+<input>
+<soap:body use="literal"/>
+</input>
+<output>
+<soap:body use="literal"/>
+</output>
+<fault name="MemberNotFoundException">
+<soap:fault name="MemberNotFoundException" use="literal"/>
+</fault>
+</operation>
+<operation name="retrieveStaffByUsername">
+<soap:operation soapAction=""/>
+<input>
+<soap:body use="literal"/>
+</input>
+<output>
+<soap:body use="literal"/>
+</output>
+<fault name="StaffNotFoundException">
+<soap:fault name="StaffNotFoundException" use="literal"/>
+</fault>
+</operation>
+<operation name="retrieveStaffByStaffId">
+<soap:operation soapAction=""/>
+<input>
+<soap:body use="literal"/>
+</input>
+<output>
+<soap:body use="literal"/>
+</output>
+<fault name="StaffNotFoundException">
+<soap:fault name="StaffNotFoundException" use="literal"/>
+</fault>
+</operation>
+<operation name="retrieveBookByIsbn">
+<soap:operation soapAction=""/>
+<input>
+<soap:body use="literal"/>
+</input>
+<output>
+<soap:body use="literal"/>
+</output>
+<fault name="BookNotFoundException">
+<soap:fault name="BookNotFoundException" use="literal"/>
+</fault>
+</operation>
+<operation name="retrieveAllStaffs">
 <soap:operation soapAction=""/>
 <input>
 <soap:body use="literal"/>

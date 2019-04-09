@@ -7,6 +7,8 @@ import javax.ejb.Local;
 import javax.ejb.Remote;
 import javax.ejb.Stateless;
 import javax.persistence.EntityManager;
+import javax.persistence.NoResultException;
+import javax.persistence.NonUniqueResultException;
 import javax.persistence.PersistenceContext;
 import javax.persistence.Query;
 import util.exception.FineNotFoundException;
@@ -29,7 +31,7 @@ public class FineEntityController implements FineEntityControllerRemote, FineEnt
     
     }
     
-     @Override
+    @Override
     public List<FineEntity> retrieveAllFines()
     {
          Query query = entityManager.createQuery("SELECT s FROM FineEntity s");
@@ -38,6 +40,15 @@ public class FineEntityController implements FineEntityControllerRemote, FineEnt
     }
     
     
+    @Override
+    public List<FineEntity> retrieveBorrowerFines(String ic)
+    {
+        Query query = entityManager.createQuery("SELECT s FROM FineEntity s WHERE s.lending.member.identityNumber = :inIc");
+        query.setParameter("inIc", ic);
+        
+        return query.getResultList();
+        
+    }
     
     @Override
     public FineEntity retrieveFineByFineId(Long fineId) throws FineNotFoundException
@@ -55,6 +66,22 @@ public class FineEntityController implements FineEntityControllerRemote, FineEnt
    
     }   
     
+    @Override
+    public List<FineEntity> retrieveOutstandingFines(String ic) throws FineNotFoundException
+    {
+        Query query = entityManager.createQuery("SELECT s FROM FineEntity s WHERE s.lending.member.identityNumber = :inIc");
+        query.setParameter("inIc", ic);
+        
+        try
+        {
+            return query.getResultList();
+        }
+        catch(NoResultException | NonUniqueResultException ex)
+        {
+            throw new FineNotFoundException("Member Ic " + ic + " does not exist!");
+        }
+    }
+ 
     @Override
     public void updateFine(FineEntity fineEntity)
     {

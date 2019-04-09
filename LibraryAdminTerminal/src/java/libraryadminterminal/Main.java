@@ -1,4 +1,3 @@
-
 package libraryadminterminal;
 
 import ejb.session.stateless.BookEntityControllerRemote;

@@ -27,8 +27,7 @@ public class PaymentEntity implements Serializable {
     public PaymentEntity() {
     }
 
-    public PaymentEntity(Long paymentId, BigDecimal amount, String method, FineEntity fine) {
-        this.paymentId = paymentId;
+    public PaymentEntity(BigDecimal amount, String method, FineEntity fine) {
         this.amount = amount;
         this.method = method;
         this.fine = fine;

@@ -30,7 +30,7 @@ public class ReservationEntityController implements ReservationEntityControllerR
     
     }
     
-     @Override
+    @Override
     public List<ReservationEntity> retrieveAllReservations()
     {
          Query query = entityManager.createQuery("SELECT s FROM ReservationEntity s");
@@ -38,6 +38,15 @@ public class ReservationEntityController implements ReservationEntityControllerR
         return query.getResultList();
     }
     
+    @Override
+    public List<ReservationEntity> retrieveBookReservations(Long bookId)
+    {
+        Query query = entityManager.createQuery("SELECT s FROM ReservationEntity s WHERE s.book.bookId = :inId");
+        query.setParameter("inId", bookId);
+        
+        return query.getResultList();
+        
+    }
     
     
     @Override
@@ -55,7 +64,7 @@ public class ReservationEntityController implements ReservationEntityControllerR
         }
    
     }   
-    
+   
     @Override
     public void updateReservation(ReservationEntity reservationEntity)
     {

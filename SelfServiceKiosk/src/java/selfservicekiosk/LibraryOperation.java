@@ -1,4 +1,4 @@
-package libraryadminterminal;
+package selfservicekiosk;
 
 import ejb.session.stateless.BookEntityControllerRemote;
 import ejb.session.stateless.FineEntityControllerRemote;
@@ -17,6 +17,7 @@ import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Date;
+import java.util.InputMismatchException;
 import java.util.Scanner;
 import java.util.List;
 import java.util.concurrent.TimeUnit;
@@ -46,87 +47,18 @@ public class LibraryOperation {
         this.lendingEntityControllerRemote = lendingEntityControllerRemote;
     }
 
-   
-    public void menuLibrary() {
-       
-        Scanner scanner = new Scanner(System.in);
-        Integer response = 0;
-        
-        while (true) {
-            System.out.println("\n");
-            System.out.println("*** ILS System :: Library Operation ***\n");
-            System.out.println("1: Lend Book");
-            System.out.println("2: View Lent Books");
-            System.out.println("3: Return Book");
-            System.out.println("4: Extend Book");
-            System.out.println("5: Pay Fines");
-            System.out.println("6: Manage Reservations");
-            System.out.println("7: Back\n");
-            response = 0;
-            
-            while (response < 1 || response > 7) {
-                System.out.print("> ");
-
-                response = scanner.nextInt();
-
-                switch (response) {
-                    case 1:
-                        lendBook();
-                        break;
-                    case 2:
-                        viewLentBooks();
-                        break;
-                    case 3:
-                        returnBook();
-                        break;
-                
-                    case 4:
-                        extendBook();
-                        break;
-                
-                    case 5:
-                        payFines();
-                        break;                
-                
-                    case 6:
-                        manageReservations();
-                        break;
-                    case 7:
-                        return;
-                    default:
-                        System.out.println("Invalid option, please try again!\n");
-                        break;
-                }
-            }
-             
-            if (response == 7) {
-                return;
-            }
-        }
-    }
-    
-    
-    private void lendBook() {
+    public void borrowBook(MemberEntity currentMemberEntity) {
         Scanner scanner = new Scanner(System.in);
         LendingEntity newLendingEntity = new LendingEntity();
-        MemberEntity thisMember = new MemberEntity();
+        MemberEntity thisMember = currentMemberEntity;
         BookEntity thisBook = new BookEntity();
         
         System.out.println("\n");
-        System.out.println("*** ILS :: Library Operation :: Lend Book ***\n");   
-        System.out.print("Enter Member Identity Number> ");
-        String ic = scanner.nextLine().trim();
+        System.out.println("*** Self-Service Kiosk :: Borrow Book ***\n");   
         
-        try {
-           thisMember = memberEntityControllerRemote.retrieveMemberByIc(ic);
-        } catch (MemberNotFoundException ex) {
-            System.out.println("An error has occurred: " + ex.getMessage() + "\n");
-            return;
-        }
-        
-        /*** Reject Lend (Quit Method): Outstanding Fines. ***/
-        if (!(fineEntityControllerRemote.retrieveBorrowerFines(ic)).isEmpty()) {
-            System.out.println("Member restricted from borrowing due to outstanding fines.\n");
+        /*** Restrict Borrowing (Quit Method): Outstanding Fines. ***/
+        if (!(fineEntityControllerRemote.retrieveBorrowerFines(thisMember.getIdentityNumber())).isEmpty()) {
+            System.out.println("You are restricted from borrowing due to outstanding fines.\n");
             return;
         }
         
@@ -136,7 +68,7 @@ public class LibraryOperation {
         try {
             thisBook = bookEntityControllerRemote.retrieveBookByBookId(bookId);
             
-            /*** Case: Book has Reservations & Book is Available After Recent Return. ***/
+            /*** Case: Book has Reservations & Book is Available After Previous Borrower Return. ***/
             if (!(reservationEntityControllerRemote.retrieveBookReservations(bookId)).isEmpty() && thisBook.getAvailable() == 1) {
                 List<ReservationEntity> listOfReservations = reservationEntityControllerRemote.retrieveBookReservations(bookId);
                 ReservationEntity firstReservation = new ReservationEntity();
@@ -153,7 +85,6 @@ public class LibraryOperation {
                 
                 /*** Accept Borrowing: First in Reservation Line for Book is Current Member. ***/
                 if  (firstReservation.getMember().getIdentityNumber().equals(thisMember.getIdentityNumber())) {
-                    
                     /*** Delete Reservation and Continue Flow. ***/
                     try {
                     reservationEntityControllerRemote.deleteReservation(firstReservation.getReservationId());
@@ -162,7 +93,8 @@ public class LibraryOperation {
                         return;    
                     }
                 }  
-            } /*** Case: Book has No Reservations & Book is Not Available. ***/
+            }
+            /*** Case: Book has No Reservations & Book is Not Available. ***/
             else if (reservationEntityControllerRemote.retrieveBookReservations(bookId).isEmpty() && thisBook.getAvailable() == 0) {
                 System.out.println("Book is not available for lending.\n");
                 return;
@@ -172,13 +104,13 @@ public class LibraryOperation {
                 return;
             }
             
-            /*** Reject Lend (Quit Method): Book Unavailable. ***/
+            /*** Reject Borrowing (Quit Method): Book Unavailable. ***/
             if (thisBook.getAvailable() < 1) {
                 System.out.println("Book is not available for lending.\n");
                 return;
             }
             
-            if (thisMember.getBookBorrowed() < 3) {    
+            if (thisMember.getBookBorrowed() < 3){    
                 
                 newLendingEntity.setBook(thisBook);
                 newLendingEntity.setMember(thisMember);
@@ -187,7 +119,7 @@ public class LibraryOperation {
                 Date today = cal.getTime();
                 cal.add(Calendar.DAY_OF_YEAR, 14);
                 Date due = cal.getTime();
-                        
+
                 newLendingEntity.setLendDate(today);
                 newLendingEntity.setDueDate(due);
                 newLendingEntity.setFine(null);
@@ -200,10 +132,10 @@ public class LibraryOperation {
                 memberEntityControllerRemote.updateMember(thisMember);
                 
                 SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd");
-                System.out.println("Successfully lent book to member. Due Date: " + sdf.format(due) +".\n");  
+                System.out.println("Successfully lent book. Due Date: " + sdf.format(due) +".\n");  
             } else {
                 /*** Reject Lend (Quit Method): Exceed Borrow Count. ***/
-                System.out.println("Member has exceeded the borrowing limit.\n");
+                System.out.println("You have exceeded your borrowing limit.\n");
             }
         } catch (BookNotFoundException ex) {
             System.out.println("An error has occurred: " + ex.getMessage() + "\n");
@@ -211,33 +143,27 @@ public class LibraryOperation {
         }
     }
     
-    private void viewLentBooks() 
+    public void viewLentBooks(MemberEntity currentMemberEntity) 
     {
         Scanner scanner = new Scanner(System.in);
-        MemberEntity thisMember = new MemberEntity();
+        MemberEntity thisMember = currentMemberEntity;
         List<LendingEntity> listOfCurrentLendings = new ArrayList<>();
         SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd");
         
         System.out.println("\n");
-        System.out.println("*** ILS :: Library Operation :: View Lent Books ***\n");
-        System.out.print("Enter Member Identity Number> ");
+        System.out.println("*** Self-Service Kiosk :: View Lent Books ***\n");
         
         try {
-            String ic = scanner.nextLine().trim();
-            thisMember = memberEntityControllerRemote.retrieveMemberByIc(ic);
-            
-            System.out.println("\n");
             System.out.println("Currently Lent Books: ");
             
-            listOfCurrentLendings = lendingEntityControllerRemote.retrieveCurrentLendings(ic);
-            
+            listOfCurrentLendings = lendingEntityControllerRemote.retrieveCurrentLendings(thisMember.getIdentityNumber());
             System.out.printf("%-12s%-50s%-25s\n", "Id", "Title", "Due Date");
             if (!listOfCurrentLendings.isEmpty()) {
                 for (LendingEntity lendings : listOfCurrentLendings) {
-                    System.out.printf("%-12s%-50s%-25s\n", lendings.getBook().getBookId().toString(), lendings.getBook().getTitle(), sdf.format(lendings.getDueDate()));
+                System.out.printf("%-12s%-50s%-25s\n", lendings.getBook().getBookId().toString(), lendings.getBook().getTitle(), sdf.format(lendings.getDueDate()));
                 }
             } else {
-                System.out.println("Member has not borrowed any books.");
+                System.out.println("You did not borrow any books.");
                 return;
             }
         } catch (MemberNotFoundException ex) {
@@ -246,32 +172,26 @@ public class LibraryOperation {
         }
     }
     
-    private void returnBook() {
+    public void returnBook(MemberEntity currentMemberEntity) {
         Scanner scanner = new Scanner(System.in);
-        MemberEntity thisMember = new MemberEntity();
+        MemberEntity thisMember = currentMemberEntity;
         List<LendingEntity> listOfCurrentLendings = new ArrayList<>();
         SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd");
         
         System.out.println("\n");
-        System.out.println("*** ILS :: Library Operation :: View Lent Books ***\n");
-        System.out.print("Enter Member Identity Number> ");
-        String ic = scanner.nextLine().trim();
+        System.out.println("*** Self-Service Kiosk :: Return Book ***\n");
         
         try {    
-            thisMember = memberEntityControllerRemote.retrieveMemberByIc(ic);
-            
-            System.out.println("\n");
             System.out.println("Currently Lent Books: ");
-            
-            listOfCurrentLendings = lendingEntityControllerRemote.retrieveCurrentLendings(ic);
+            listOfCurrentLendings = lendingEntityControllerRemote.retrieveCurrentLendings(thisMember.getIdentityNumber());
             
             System.out.printf("%-12s%-50s%-25s\n", "Id", "Title", "Due Date");
             if (!listOfCurrentLendings.isEmpty()) {
                 for (LendingEntity lendings : listOfCurrentLendings) {
-                    System.out.printf("%-12s%-50s%-25s\n", lendings.getBook().getBookId().toString(), lendings.getBook().getTitle(), sdf.format(lendings.getDueDate()));
+                System.out.printf("%-12s%-50s%-25s\n", lendings.getBook().getBookId().toString(), lendings.getBook().getTitle(), sdf.format(lendings.getDueDate()));
                 }
             } else {
-                System.out.println("Member did not borrow any books. \n");
+                System.out.println("You did not borrow any books. \n");
                 return;
             }
         } catch (MemberNotFoundException ex) {
@@ -292,7 +212,7 @@ public class LibraryOperation {
            System.out.println("An error has occurred: " + ex.getMessage() + "\n");
            return; 
         }
-         
+             
         Boolean containsBook = false;
         
         for (LendingEntity lending : listOfCurrentLendings) {
@@ -306,7 +226,7 @@ public class LibraryOperation {
         }
         
         if (!containsBook) {
-            System.out.println("Book is not in current lendings.");
+            System.out.println("You did not borrow this book.");
             return;
         }
         
@@ -338,33 +258,27 @@ public class LibraryOperation {
         fineEntityControllerRemote.createNewFine(newFineEntity);
     }
     
-    private void extendBook() {
+    public void extendBook(MemberEntity currentMemberEntity) {
     
         Scanner scanner = new Scanner(System.in);
-        MemberEntity thisMember = new MemberEntity();
+        MemberEntity thisMember = currentMemberEntity;
         List<LendingEntity> listOfCurrentLendings = new ArrayList<>();
         SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd");
         
         System.out.println("\n");
-        System.out.println("*** ILS :: Library Operation :: Extend Book ***\n");
-        System.out.print("Enter Member Identity Number> ");
-        String ic = scanner.nextLine().trim();
-        
-        try {    
-            thisMember = memberEntityControllerRemote.retrieveMemberByIc(ic);
-            
-            System.out.println("\n");
+        System.out.println("*** Self-Service Kiosk :: Extend Book ***\n");
+
+        try {
             System.out.println("Currently Lent Books: ");
             
-            listOfCurrentLendings = lendingEntityControllerRemote.retrieveCurrentLendings(ic);
-            
+            listOfCurrentLendings = lendingEntityControllerRemote.retrieveCurrentLendings(thisMember.getIdentityNumber());
             System.out.printf("%-12s%-50s%-25s\n", "Id", "Title", "Due Date");
             if (!listOfCurrentLendings.isEmpty()) {
                 for (LendingEntity lendings : listOfCurrentLendings) {
                     System.out.printf("%-12s%-50s%-25s\n", lendings.getBook().getBookId().toString(), lendings.getBook().getTitle(), sdf.format(lendings.getDueDate()));
                 }
             } else {
-                System.out.println("Member did not borrow any books. \n");
+                System.out.println("You did not borrow any books. \n");
                 return;
             }
         } catch (MemberNotFoundException ex) {
@@ -399,7 +313,7 @@ public class LibraryOperation {
         }
         
         if (!containsBook) {
-            System.out.println("Book is not in current lendings.");
+            System.out.println("You did not borrow this book.");
             return;
         }
         
@@ -413,7 +327,7 @@ public class LibraryOperation {
         }   
         
         /*** Reject Extend (Quit Method): Member has outstanding fines. ***/
-        if (!(fineEntityControllerRemote.retrieveBorrowerFines(ic)).isEmpty())
+        if (!(fineEntityControllerRemote.retrieveBorrowerFines(thisMember.getIdentityNumber())).isEmpty())
         { 
             System.out.println("Unable to extend due to outstanding fines.");
             return;
@@ -436,35 +350,29 @@ public class LibraryOperation {
         System.out.println("Book successfully extended. New due date: " + sdf.format(newDueDate));
     }
     
-    private void payFines() {
+    public void payFines(MemberEntity currentMemberEntity) {
         Scanner scanner = new Scanner(System.in);
         List<FineEntity> outstandingFines = new ArrayList<>();
-        MemberEntity thisMember = new MemberEntity();
+        MemberEntity thisMember = currentMemberEntity;
  
         System.out.println("\n");
-        System.out.println("*** ILS :: Library Operation :: Pay Fines ***\n");
-        System.out.print("Enter Member Identity Number> ");
-        String ic = scanner.nextLine().trim();
+        System.out.println("*** Self-Service Kiosk :: Pay Fines ***\n");
         
         try {    
-            thisMember = memberEntityControllerRemote.retrieveMemberByIc(ic);
-            
-            System.out.println("\n");
             System.out.println("Unpaid Fines for Member: ");
             
-            outstandingFines = fineEntityControllerRemote.retrieveOutstandingFines(ic);
-            
+            outstandingFines = fineEntityControllerRemote.retrieveOutstandingFines(thisMember.getIdentityNumber());
             System.out.printf("%-8s%-20s\n", "Id", "Amount");
-            if (!outstandingFines.isEmpty()) {
+            
+            if (!outstandingFines.isEmpty()) {  
                 for (FineEntity fines : outstandingFines) {
-                    System.out.printf("%-8s%-20s\n", fines.getFineId(), NumberFormat.getCurrencyInstance().format(fines.getAmount()));
+                System.out.printf("%-8s%-20s\n", fines.getFineId(), NumberFormat.getCurrencyInstance().format(fines.getAmount()));
                 }
             } else {
-                System.out.println("Member does not have outstanding fines. \n");
+                System.out.println("You do not have any outstanding fines. \n");
                 return;
             }
-        } 
-        catch (MemberNotFoundException | FineNotFoundException ex) {
+        } catch (FineNotFoundException ex) {
            System.out.println("An error has occurred: " + ex.getMessage() + "\n");
            return; 
         }
@@ -472,7 +380,7 @@ public class LibraryOperation {
         System.out.print("\n");
         System.out.print("Enter Fine to Settle> ");
         Long fineId = scanner.nextLong();
-        
+        scanner.nextLine();
         FineEntity thisFine = new FineEntity();
         
         try {
@@ -481,8 +389,8 @@ public class LibraryOperation {
             System.out.println("An error has occurred: " + ex.getMessage() + "\n");
             return; 
         }
-       
-        Boolean containsFine = false;
+        
+       Boolean containsFine = false;
         
         for (FineEntity fine : outstandingFines) {
             if (!fine.getFineId().equals(fineId)) {
@@ -499,166 +407,178 @@ public class LibraryOperation {
             return;
         }
         
-        System.out.print("Select Payment Method (1: Cash, 2: Card)> ");
-        Integer response = scanner.nextInt();
-        
-        if (response == 1 || response == 2) {
-            try {
-                fineEntityControllerRemote.deleteFine(fineId);
-                System.out.println("Fine successfully paid.");
-            } catch (FineNotFoundException ex) {
-                System.out.println("An error has occurred: " + ex.getMessage() + "\n");
-                return;
-            }
-        } else {
-            System.out.println("Invalid option, please try again!\n");
+       try {
+            System.out.print("Enter Name of Card> ");
+            String name = scanner.nextLine();
+            System.out.print("Enter Card Number> ");
+            Long card = scanner.nextLong();
+            System.out.print("Enter Card Expiry (MMYYYY)> ");
+            Integer date = scanner.nextInt();
+            System.out.print("Enter PIN> ");
+            Integer pin = scanner.nextInt();
+       } catch (InputMismatchException ex) {
+            System.out.println("Please ensure all field input types are correct. Please try again.\n");
+       }
+       
+        try {
+            fineEntityControllerRemote.deleteFine(fineId);
+            System.out.println("Fine successfully paid.");
+        } catch (FineNotFoundException ex) {
+            System.out.println("An error has occurred: " + ex.getMessage() + "\n");
+            return;
         }
     }
     
-    private void manageReservations() {
-        
+    public void searchBook(MemberEntity currentMemberEntity) 
+    {
         Scanner scanner = new Scanner(System.in);
-        Integer response = 0;
-        
-        while (true) {
-            System.out.println("\n");
-            System.out.println("*** ILS :: Library Operation :: Manage Reservations ***\n");
-            System.out.println("1: View Reservations for Book");
-            System.out.println("2: Delete Reservation");
-            System.out.println("3: Back \n");
-            response = 0;
-            
-            while (response < 1 || response > 3) {
-                System.out.print("> ");
-
-                response = scanner.nextInt();
-
-                switch (response) {
-                    case 1:
-                        viewReservationsForBooks();
-                        break;
-                    case 2:
-                        deleteReservation();
-                        break;
-                    case 3:
-                        return;
-                    default:
-                        System.out.println("Invalid option, please try again!\n");
-                        break;
-                }
-            }
-            if (response == 3) {
-                return;
-            }
-        }
-    }
-    
-    private void viewReservationsForBooks(){
-        
-        Scanner scanner = new Scanner(System.in);
-        BookEntity thisBook = new BookEntity();
-        List<ReservationEntity> listOfReservations = new ArrayList<>();
+        List<BookEntity> allBooks = new ArrayList<>();
+        MemberEntity thisMember = currentMemberEntity;
+        List<LendingEntity> thisBookLendings = new ArrayList<>();
+        List<ReservationEntity> thisBookReservations = new ArrayList<>(); 
+        SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd");
         
         System.out.println("\n");
-        System.out.println("*** ILS :: Library Operation :: View Reservations for Book ***\n");
-        System.out.print("Enter Book ISBN> ");
+        System.out.println("*** Self-Service Kiosk :: Search Book ***\n");
+        System.out.print("Enter Title to Search> ");
+        String title = scanner.nextLine();
         
         try {
-            String isbn = scanner.nextLine().trim();
-            thisBook = bookEntityControllerRemote.retrieveBookByIsbn(isbn);
+            allBooks = bookEntityControllerRemote.retrieveBookByTitle(title);
+            System.out.printf("%-8s%-50s%-20s\n", "Book Id", "Title", "Availability");
+            String status = "";
             
-            listOfReservations = reservationEntityControllerRemote.retrieveBookReservations(thisBook.getBookId());
-            
-            System.out.println("\n");
-            System.out.println("Currently Reserved Books: ");
-            
-            listOfReservations = reservationEntityControllerRemote.retrieveBookReservations(thisBook.getBookId());
-            
-            System.out.printf("%-12s%-50s%-40s%-15s%-15s\n", "ID", "Book Title", "Member Identification Number", "Queue Number", "Fulfilled");
-            if (!listOfReservations.isEmpty()) {
-                for (ReservationEntity reservations : listOfReservations) {
-                    System.out.printf("%-12s%-50s%-40s%-15s%-15s\n", reservations.getReservationId(), reservations.getBook().getTitle(), reservations.getMember().getIdentityNumber(), reservations.getQueueNumber(), reservations.getFulfilled());
+            if (!(allBooks.isEmpty())) {   
+                for (BookEntity book : allBooks) {
+                    thisBookReservations = reservationEntityControllerRemote.retrieveBookReservations(book.getBookId());
+                    thisBookLendings = lendingEntityControllerRemote.retrieveCurrentLendingsByBookId(book.getBookId());
+                    
+                    if (book.getAvailable() == 1 && thisBookReservations.isEmpty()) {
+                        status = "Currently Available";
+                    } else if (!(thisBookReservations.isEmpty())) {
+                        status = "Reserved";    
+                    } else if (!(thisBookLendings.isEmpty()) && thisBookReservations.isEmpty()) {
+                        status = "Due On " + sdf.format(thisBookLendings.get(thisBookLendings.size()-1).getDueDate());
+                    }
+                System.out.printf("%-8s%-50s%-20s\n", book.getBookId(), book.getTitle(), status);
                 }
             } else {
-                System.out.println("The book has no reservations.");
-                return;
-            }
-        } catch (BookNotFoundException ex) {
-           System.out.println("An error has occurred: " + ex.getMessage() + "\n");
-           return; 
-        }     
-    }
-    
-    private void deleteReservation() {
-        Scanner scanner = new Scanner(System.in);
-        BookEntity thisBook = new BookEntity();
-        List<ReservationEntity> listOfReservations = new ArrayList<>();
-        
-        System.out.println("\n");
-        System.out.println("*** ILS :: Library Operation :: Delete Reservation ***\n");
-        System.out.print("Enter Book ISBN> ");
-        
-        try {
-            String isbn = scanner.nextLine().trim();
-            thisBook = bookEntityControllerRemote.retrieveBookByIsbn(isbn);
-            
-            listOfReservations = reservationEntityControllerRemote.retrieveBookReservations(thisBook.getBookId());
-            
-            System.out.println("\n");
-            System.out.println("Currently Reserved Books: ");
-            
-            listOfReservations = reservationEntityControllerRemote.retrieveBookReservations(thisBook.getBookId());
-            
-            System.out.printf("%-12s%-30s%-40s%-15s%-15s\n", "Reservation ID", "Book Title", "Member Identification Number", "Queue Number", "Fulfilled");
-            if (!listOfReservations.isEmpty()) {
-                for (ReservationEntity reservations : listOfReservations) {
-                    System.out.printf("%-12s%-30s%-40s%-15s%-15s\n", reservations.getReservationId(), reservations.getBook().getTitle(), reservations.getMember().getIdentityNumber(), reservations.getQueueNumber(), reservations.getFulfilled());
-                }
-            } else {
-                System.out.println("The book has no reservations.");
+                System.out.println("There are no books available. \n");
                 return;
             }
         } catch (BookNotFoundException ex) {
            System.out.println("An error has occurred: " + ex.getMessage() + "\n");
            return; 
         }
+    }
+    
+    public void reserveBook(MemberEntity currentMemberEntity) {
+        Scanner scanner = new Scanner(System.in);
+        List<BookEntity> allBooks = new ArrayList<>();
+        MemberEntity thisMember = currentMemberEntity;
+        List<LendingEntity> thisBookLendings = new ArrayList<>();
+        List<ReservationEntity> thisBookReservations = new ArrayList<>();
+        SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd");
         
-        
-        System.out.print("Enter Reservation ID> ");    
-        Long reservationId = scanner.nextLong();
-        
-        ReservationEntity thisReservation = new ReservationEntity();       
+        System.out.println("\n");
+        System.out.println("*** Self-Service Kiosk :: Search Book ***\n");
+        System.out.print("Enter Title to Search> ");
+        String title = scanner.nextLine();
+        System.out.println("\n");
         
         try {
-            thisReservation = reservationEntityControllerRemote.retrieveReservationByReservationId(reservationId);
-        } catch (ReservationNotFoundException ex) {
+            allBooks = bookEntityControllerRemote.retrieveBookByTitle(title);
+            System.out.printf("%-8s%-50s%-20s\n", "Book Id", "Title", "Availability");
+            String status = "";
+            
+            if (!allBooks.isEmpty()) {
+                for (BookEntity book : allBooks) {
+                    thisBookReservations = reservationEntityControllerRemote.retrieveBookReservations(book.getBookId());
+                    thisBookLendings = lendingEntityControllerRemote.retrieveCurrentLendingsByBookId(book.getBookId());
+                    
+                    if (book.getAvailable() == 1 && thisBookReservations.isEmpty()) {
+                        status = "Currently Available";   
+                    } else if (!(thisBookReservations.isEmpty())) {
+                        status = "Reserved";
+                    } else if (!(thisBookLendings.isEmpty()) && thisBookReservations.isEmpty()) {
+                        status = "Due On " + sdf.format(thisBookLendings.get(thisBookLendings.size()-1).getDueDate());
+                    }
+                System.out.printf("%-8s%-50s%-20s\n", book.getBookId(), book.getTitle(), status);
+                }
+            } else {
+                System.out.println("There are no books available. \n");
+                return;
+            }
+        } catch (BookNotFoundException ex) {
+           System.out.println("An error has occurred: " + ex.getMessage() + "\n");
+           return; 
+        }
+    
+        System.out.println("\n");
+        System.out.print("Enter Book ID to Reserve> ");
+        
+        BookEntity thisBook = new BookEntity();
+        ReservationEntity newReservationEntity = new ReservationEntity();
+        Long bookId = scanner.nextLong();     
+        
+        try {
+            thisBook = bookEntityControllerRemote.retrieveBookByBookId(bookId);
+        } catch(BookNotFoundException ex) {
             System.out.println("An error has occurred: " + ex.getMessage() + "\n");
             return; 
         }
         
-        Boolean containsReservation = false;
-        
-        for (ReservationEntity reservation : listOfReservations) {
-            if (!reservation.getReservationId().equals(reservationId)) {
-                containsReservation =  false;
+       Boolean containsBook = false;
+       
+       for (BookEntity book : allBooks) {
+            if (!book.getBookId().equals(bookId)) {
+                containsBook =  false;
             } else {
-                thisReservation = reservation;
-                containsReservation = true;
+                thisBook = book;
+                containsBook = true;
                 break;
             }
         }
         
-        if (!containsReservation) {
-            System.out.println("Reservation does not exist.");
+        if (!containsBook) {
+            System.out.println("Book does not exist.");
+            return;
+        }
+       
+
+        if (!(fineEntityControllerRemote.retrieveBorrowerFines(thisMember.getIdentityNumber())).isEmpty()) { 
+            System.out.println("Unable to reserve due to outstanding fines.");
             return;
         }
         
-        try {
-            reservationEntityControllerRemote.deleteReservation(reservationId);
-            System.out.println("Reservation successfully deleted.");
-        } catch (ReservationNotFoundException ex) {
-           System.out.println("An error has occurred: " + ex.getMessage() + "\n");
-           return;
-        }  
-    }   
+        if (thisBook.getAvailable() == 1) {
+            System.out.println("Book is available and cannot be reserved.");
+            return;
+        }
+        
+        if (!thisBookLendings.isEmpty()){
+            if (thisBookLendings.get(0).getMember().getIdentityNumber().equals(thisMember.getIdentityNumber())) {
+            System.out.println("You have borrowed this book.");
+            return;
+            }
+        }
+       
+        Integer latestQueueNumber = 0;
+        for (ReservationEntity reservation : thisBookReservations) {
+            if (reservation.getQueueNumber() > latestQueueNumber) {
+                latestQueueNumber = reservation.getQueueNumber();
+            }
+            
+            if (reservation.getMember().getIdentityNumber().equals(thisMember.getIdentityNumber())) {
+                System.out.println("You have already reserved this book.\n");
+                return;
+            }
+        }
+        newReservationEntity.setBook(thisBook);
+        newReservationEntity.setMember(thisMember);
+        newReservationEntity.setFulfilled(Boolean.FALSE);
+        newReservationEntity.setQueueNumber(latestQueueNumber+1);
+        reservationEntityControllerRemote.createNewReservation(newReservationEntity);
+        System.out.println("Book successfully reserved.");
+    } 
 }

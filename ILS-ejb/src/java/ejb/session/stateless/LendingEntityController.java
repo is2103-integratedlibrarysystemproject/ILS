@@ -1,6 +1,7 @@
 
 package ejb.session.stateless;
 
+import entity.BookEntity;
 import util.exception.LendingNotFoundException;
 import entity.LendingEntity;
 import entity.MemberEntity;
@@ -13,6 +14,7 @@ import javax.persistence.NoResultException;
 import javax.persistence.NonUniqueResultException;
 import javax.persistence.PersistenceContext;
 import javax.persistence.Query;
+import util.exception.BookNotFoundException;
 import util.exception.MemberNotFoundException;
 
 
@@ -44,7 +46,7 @@ public class LendingEntityController implements LendingEntityControllerRemote, L
     @Override
     public List<LendingEntity> retrieveCurrentLendings(String ic) throws MemberNotFoundException
     {
-        Query query = entityManager.createQuery("SELECT s.book.bookId, s.book.title, s.dueDate FROM LendingEntity s WHERE s.returnDate IS NULL AND s.member.identityNumber = :inIc");
+        Query query = entityManager.createQuery("SELECT s FROM LendingEntity s WHERE s.returnDate IS NULL AND s.member.identityNumber = :inIc");
         query.setParameter("inIc", ic);
         
         try
@@ -56,6 +58,23 @@ public class LendingEntityController implements LendingEntityControllerRemote, L
             throw new MemberNotFoundException("Member Ic " + ic + " does not exist!");
         }
     }
+    
+    @Override
+    public List<LendingEntity> retrieveCurrentLendingsByBookId(Long bookId) throws BookNotFoundException
+    {
+        Query query = entityManager.createQuery("SELECT s FROM LendingEntity s WHERE s.returnDate IS NULL AND s.book.bookId = :inId");
+        query.setParameter("inId", bookId);
+        
+        try
+        {
+            return query.getResultList();
+        }
+        catch(NoResultException | NonUniqueResultException ex)
+        {
+            throw new BookNotFoundException("Book Id " + bookId + " does not exist!");
+        }
+    }
+    
     
     @Override
     public LendingEntity retrieveLendingByLendingId(Long lendingId) throws LendingNotFoundException
@@ -70,13 +89,18 @@ public class LendingEntityController implements LendingEntityControllerRemote, L
         {
             throw new LendingNotFoundException("Lending ID " + lendingId + " does not exist!");
         }
-   
-    }   
+    }
     
     @Override
     public void updateLending(LendingEntity lendingEntity)
     {
-        entityManager.merge(lendingEntity);
+        LendingEntity lending = entityManager.find(LendingEntity.class, lendingEntity.getLendId());
+        lending.setDueDate(lendingEntity.getDueDate());
+        lending.setFine(lendingEntity.getFine());
+        lending.setMember(lendingEntity.getMember());
+        lending.setLendDate(lendingEntity.getLendDate());
+        lending.setReturnDate(lendingEntity.getReturnDate());
+        lending.setBook(lendingEntity.getBook());
     }
     
     

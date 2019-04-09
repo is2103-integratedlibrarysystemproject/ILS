@@ -2,6 +2,7 @@ package entity;
 
 import java.io.Serializable;
 import java.util.Date;
+import static javax.persistence.CascadeType.ALL;
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
@@ -36,28 +37,24 @@ public class LendingEntity implements Serializable {
     @ManyToOne
     private MemberEntity member;
     
-    @OneToOne(mappedBy = "lending")
-    private FineEntity fine;
-    
     @ManyToOne
     private BookEntity book;
-    
+   
+    @OneToOne(cascade=ALL, mappedBy = "lending")
+    private FineEntity fine;
+
     
     public LendingEntity() {
     }
 
-  
-    public LendingEntity(Date lendDate, Date dueDate, Date returnDate, MemberEntity member, FineEntity fine, BookEntity book) {
-       
-        this();
+    public LendingEntity(Date lendDate, Date dueDate, Date returnDate, MemberEntity member, BookEntity book, FineEntity fine) {
         this.lendDate = lendDate;
         this.dueDate = dueDate;
         this.returnDate = returnDate;
         this.member = member;
-        this.fine = fine;
         this.book = book;
+        this.fine = fine;
     }
-    
 
     public Long getLendId() {
         return lendId;
@@ -99,6 +96,14 @@ public class LendingEntity implements Serializable {
         this.member = member;
     }
 
+    public BookEntity getBook() {
+        return book;
+    }
+
+    public void setBook(BookEntity book) {
+        this.book = book;
+    }
+
     public FineEntity getFine() {
         return fine;
     }
@@ -106,14 +111,7 @@ public class LendingEntity implements Serializable {
     public void setFine(FineEntity fine) {
         this.fine = fine;
     }
-
-    public BookEntity getBook() {
-        return book;
-    }
-
-    public void setBooks(BookEntity book) {
-        this.book = book;
-    }
+    
 
     @Override
     public int hashCode() {

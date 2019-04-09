@@ -27,8 +27,6 @@ public class StaffEntityController implements StaffEntityControllerRemote, Staff
     {
     }
     
-    
-    
     @Override
     public StaffEntity createNewStaff(StaffEntity newStaffEntity)
     {
@@ -112,7 +110,11 @@ public class StaffEntityController implements StaffEntityControllerRemote, Staff
     @Override
     public void updateStaff(StaffEntity staffEntity)
     {
-        entityManager.merge(staffEntity);
+        StaffEntity staff = entityManager.find(StaffEntity.class, staffEntity.getStaffId());
+        staff.setFirstName(staffEntity.getFirstName());
+        staff.setLastName(staffEntity.getLastName());
+        staff.setUsername(staffEntity.getUsername());
+        staff.setPassword(staffEntity.getPassword());
     }
     
     
@@ -120,10 +122,7 @@ public class StaffEntityController implements StaffEntityControllerRemote, Staff
     @Override
     public void deleteStaff(Long staffId) throws StaffNotFoundException
     {
-        StaffEntity staffEntityToRemove = retrieveStaffByStaffId(staffId);
+        StaffEntity staffEntityToRemove = entityManager.find(StaffEntity.class, staffId);
         entityManager.remove(staffEntityToRemove);
-    }
-
-
-    
+    }  
 }

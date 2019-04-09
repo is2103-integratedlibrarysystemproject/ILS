@@ -2,6 +2,7 @@ package entity;
 
 import java.io.Serializable;
 import java.math.BigDecimal;
+import static javax.persistence.CascadeType.ALL;
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
@@ -22,14 +23,13 @@ public class FineEntity implements Serializable {
     @OneToOne 
     private LendingEntity lending;
     
-    @OneToOne(mappedBy = "fine")
+    @OneToOne(cascade=ALL, mappedBy = "fine")
     private PaymentEntity payment;
 
     public FineEntity() {
     }
 
-    public FineEntity(Long fineId, BigDecimal amount, LendingEntity lending, PaymentEntity payment) {
-        this.fineId = fineId;
+    public FineEntity(BigDecimal amount, LendingEntity lending, PaymentEntity payment) {
         this.amount = amount;
         this.lending = lending;
         this.payment = payment;

@@ -29,8 +29,7 @@ public class ReservationEntity implements Serializable {
     public ReservationEntity() {
     }
 
-    public ReservationEntity(Long reservationId, Integer queueNumber, MemberEntity member, BookEntity book) {
-        this.reservationId = reservationId;
+    public ReservationEntity(Integer queueNumber, MemberEntity member, BookEntity book) {
         this.queueNumber = queueNumber;
         this.member = member;
         this.book = book;

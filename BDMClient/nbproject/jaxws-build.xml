@@ -19,7 +19,7 @@
     <target name="wsimport-client-SOAPWebServices" depends="wsimport-init">
         <mkdir dir="${build.generated.dir}/jax-wsCache/SOAPWebServices"/>
         <property name="wsdl-SOAPWebServices" location="xml-resources/web-service-references/SOAPWebServices/wsdl/localhost_8080/SOAPWebServices/SOAPWebServices.wsdl"/>
-        <wsimport sourcedestdir="${build.generated.dir}/jax-wsCache/SOAPWebServices" destdir="${build.generated.dir}/jax-wsCache/SOAPWebServices" wsdl="${wsdl-SOAPWebServices}" catalog="catalog.xml" encoding="${source.encoding}" extension="true" verbose="true" fork="false" wsdlLocation="http://localhost:8080/SOAPWebServices/SOAPWebServices?wsdl" xnocompile="true" xendorsed="true" package="ws.client">
+        <wsimport sourcedestdir="${build.generated.dir}/jax-wsCache/SOAPWebServices" destdir="${build.generated.dir}/jax-wsCache/SOAPWebServices" wsdl="${wsdl-SOAPWebServices}" catalog="catalog.xml" encoding="${source.encoding}" extension="true" verbose="true" fork="false" wsdlLocation="http://localhost:8080/SOAPWebServices/SOAPWebServices?WSDL" xnocompile="true" xendorsed="true" package="ws.client">
             <depends file="${wsdl-SOAPWebServices}"/>
             <produces dir="${build.generated.dir}/jax-wsCache/SOAPWebServices"/>
         </wsimport>

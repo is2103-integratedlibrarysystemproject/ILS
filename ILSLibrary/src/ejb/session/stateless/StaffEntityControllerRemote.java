@@ -9,6 +9,7 @@ import util.exception.StaffNotFoundException;
 
 
 public interface StaffEntityControllerRemote {
+    
     StaffEntity createNewStaff(StaffEntity newStaffEntity);
     
     List<StaffEntity> retrieveAllStaffs();

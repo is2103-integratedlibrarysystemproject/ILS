@@ -1,7 +1,9 @@
 package entity;
 
 import java.io.Serializable;
+import java.util.ArrayList;
 import java.util.List;
+import static javax.persistence.CascadeType.ALL;
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
@@ -35,16 +37,18 @@ public class MemberEntity implements Serializable {
     @Column
     private Integer bookBorrowed;
     
-    @OneToMany(mappedBy = "member")
+    @OneToMany(cascade = ALL, mappedBy = "member")
     private List<LendingEntity> lendings;
-    @OneToMany(mappedBy = "member")
+    @OneToMany(cascade = ALL, mappedBy = "member")
     private List<ReservationEntity> reservations;
 
     public MemberEntity() {
+        lendings = new ArrayList<>();
+        reservations = new ArrayList<>();
     }
 
-    public MemberEntity(Long memberId, String identityNumber, String securityCode, String firstName, String lastName, String gender, Integer age, String phone, String address, Integer bookBorrowed, List<LendingEntity> lendings, List<ReservationEntity> reservations) {
-        this.memberId = memberId;
+    public MemberEntity(String identityNumber, String securityCode, String firstName, String lastName, String gender, Integer age, String phone, String address, Integer bookBorrowed, List<LendingEntity> lendings, List<ReservationEntity> reservations) {
+
         this.identityNumber = identityNumber;
         this.securityCode = securityCode;
         this.firstName = firstName;
